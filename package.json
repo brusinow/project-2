@@ -1,0 +1,31 @@
+{
+  "name": "project-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^0.8.6",
+    "body-parser": "^1.15.0",
+    "connect-flash": "^0.1.1",
+    "dateformat": "^1.0.12",
+    "ejs": "^2.4.1",
+    "express": "^4.13.4",
+    "express-ejs-layouts": "^2.1.0",
+    "express-session": "^1.13.0",
+    "flash": "^1.1.0",
+    "moment": "^2.13.0",
+    "oauth": "^0.9.14",
+    "passport": "^0.3.2",
+    "passport-oauth": "^1.0.0",
+    "pg": "^4.5.3",
+    "pg-hstore": "^2.3.2",
+    "request": "^2.72.0",
+    "sequelize": "^3.21.0",
+    "time": "^0.11.4"
+  }
+}
