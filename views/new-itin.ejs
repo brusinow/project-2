@@ -1,0 +1,28 @@
+<div>
+<h2 class="text-center">Add an Event</h2>
+</div>
+<div class="row" style="margin-top: 50px">
+ 
+  <form method="POST" id="add-venue-form" action='/new-event/result' role="form">
+  <div class="form-group">
+  
+    <label class="sr-only" for="venue-name">Venue Name:</label>
+    <input type="text" name="venue" class="form-control" id="venue-name" placeholder="Venue Name">
+    <label class="sr-only" for="venue-city">Venue City:</label>
+    <input type="text" name="city" class="form-control" id="venue-city" placeholder="Venue City">
+    <label class="sr-only" for="venue-address">Venue Address:</label>
+    <input type="text" name="address" class="form-control" id="venue-address" placeholder="Complete Venue Address">
+    <label class="sr-only" for="venue-info">Assorted Information:</label>
+    <textarea class="form-control" name="info" rows="5" id="venue-info" placeholder="Venue Information"></textarea>
+</div>
+  </div>
+  <button type="submit" id="add-venue-btn" class="btn btn-default">Submit</button>
+</form>
+</div>
+  <div style="margin-top: 40px" class="row">
+    <div class="col-xs-12">
+      <div id="venue-list">
+    </div>
+  </div> 
+</div>
+</div>

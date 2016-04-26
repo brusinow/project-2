@@ -11,10 +11,13 @@ module.exports = {
       date: {
         type: Sequelize.STRING
       },
-      name: {
+      venue: {
         type: Sequelize.STRING
       },
-      formatted_address: {
+      address: {
+        type: Sequelize.STRING
+      },
+      city: {
         type: Sequelize.STRING
       },
       place_id: {

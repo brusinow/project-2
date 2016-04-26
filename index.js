@@ -49,7 +49,7 @@ app.get('/', function(req, res){
 
 app.get('/settings', function(req, res){
   if(req.currentUser) {
-  res.render('settings');
+  res.render('settings', {alerts: req.flash()});
 } else {
     req.flash('danger', 'You must be logged in, buddy...');
     res.redirect('/');
@@ -98,7 +98,7 @@ app.get('/today', function(req, res) {
 
 
 app.get('/new-event', function(req, res){
-  res.render('new-event');
+  res.render('new-event', {alerts: req.flash()});
 });
 
 
@@ -124,11 +124,15 @@ app.get('/new-event/result/:id', function(req, res){
 })
 
 app.post('/new-event/result/', function(req, res){
-  console.log(req.body);
-  
-  // db.event.create({place_id: id}).then(function(data){
-
-  // })
+  var venueDate = req.body.datepicker;
+  var venueName = req.body.venue;
+  var venueCity = req.body.city;
+  var venueAddress = req.body.address;
+  var venueInfo = req.body.info;
+  db.event.create({date: venueDate, venue: venueName, address: venueAddress, city: venueCity, info: venueInfo}).then(function(data){
+    req.flash('default', 'Your event was created!');
+    res.redirect('/settings')
+  });
 });
 
 
@@ -147,3 +151,6 @@ app.get('/logout', function(req, res){
 app.use('/auth', require('./controllers/auth'));
 
 app.listen(3000);
+
+
+

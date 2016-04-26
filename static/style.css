@@ -143,6 +143,18 @@ body {
   list-style-type: none;
 }
 
+#datepicker {
+  padding: 6px 12px;
+  width: 100%;
+  font-size: 14px;
+  border-radius: 4px;
+  color: #555555;
+  border: 1px solid #cccccc
+}
+
+#add-venue-form input {
+  margin-bottom: 5px;
+}
 /* external css: flickity.css */
 
 * {
