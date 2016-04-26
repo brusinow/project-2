@@ -77,9 +77,14 @@ app.post('/', function(req, res) {
 
 app.get('/today', function(req, res) {
   if(req.currentUser) {
-    var today = new Date();
+    var MyDate = new Date();
+    var now;
 
-    var now = today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate();
+    MyDate.setDate(MyDate.getDate());
+
+    now = ('0' + (MyDate.getMonth()+1)).slice(-2) + '/'
+             + ('0' + MyDate.getDate()).slice(-2) + '/'
+             + MyDate.getFullYear();
     var nowText = moment().format('MMMM Do, YYYY');
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
     db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
@@ -104,15 +109,33 @@ app.get('/new-event/result', function(req, res){
   console.log("running get request route");
   request(fullQuery, function(err, response, body) {
       var data = JSON.parse(body);
-      console.log(data);
-      // console.log(data);
-    if (!err && response.statusCode == 200) {    
+    
+    if (!err && response.statusCode == 200) {   
       res.send(data);
     } else {
       res.render('error')
     } 
   });
 });
+
+app.get('/new-event/result/:id', function(req, res){
+  var id = req.params.id;
+  console.log(id);
+})
+
+app.post('/new-event/result/', function(req, res){
+  console.log(req.body);
+  
+  // db.event.create({place_id: id}).then(function(data){
+
+  // })
+});
+
+
+// app.post('/new-event/result/', function(req, res){
+ 
+// });
+
 
 
 app.get('/logout', function(req, res){

@@ -20,6 +20,13 @@ td {
   font-size: 12pt;
 }
 
+h4 {
+  font-size: 18px;
+}
+
+p {
+  font-size: 12px;
+}
 
 #button-link {
     text-decoration: none;
@@ -130,6 +137,10 @@ body {
 .bullet-pill li {
   display: inline;
   text-decoration: none;
+}
+
+#venue-list {
+  list-style-type: none;
 }
 
 /* external css: flickity.css */

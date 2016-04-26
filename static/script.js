@@ -16,21 +16,37 @@ $(function () {
     });
 });
 
-$('#venue-search-btn').click(function(e){
-  e.preventDefault();
-  var input = $("#search-input");
-  var query = input.val();
-  console.log(query);
-  $.ajax({
-    url: '/new-event/result',
-    method: 'GET',
-    data: {
-      q: query,
-    },
-    done: function(xhr, status, data){
-      if(status === 200){
-        console.log(data);
-      }
-    }
-  }); 
-});
+// $('#venue-search-btn').click(function(e){
+//   e.preventDefault();
+//   var input = $("#search-input");
+//   var query = input.val();
+//   console.log(query);
+//   $.ajax({
+//     url: '/new-event/result',
+//     method: 'GET',
+//     data: {
+//       q: query,
+//     },
+//     success: function(xhr, status, data){
+//       console.log(status);
+//       if(status === 'success'){
+//         $('#venue-list').html("");
+//         // console.log(data);
+//         // console.log(data.responseJSON.results.length);
+//         for (var i=0;i< data.responseJSON.results.length; i++){
+//           $('#venue-list').append("<a href='/new-event/result/"+data.responseJSON.results[i].place_id+"'<h4>"+data.responseJSON.results[i].name+"</h4><p>"+data.responseJSON.results[i].formatted_address+"</p></a><br><br>");
+//         }
+//       }
+//     }
+//   }); 
+// });
+
+
+
+
+
+
+
+
+
+
