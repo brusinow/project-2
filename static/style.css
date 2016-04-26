@@ -152,6 +152,25 @@ body {
   border: 1px solid #cccccc
 }
 
+.center-text {
+  text-align: center;
+}
+
+.center {
+  margin: 0 auto;
+}
+
+.center-button {
+  margin-bottom: 15px;
+  text-align: center;
+  display: block;
+}
+
+.my-heading {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
 #add-venue-form input {
   margin-bottom: 5px;
 }

@@ -16,6 +16,9 @@ $(function () {
     });
 });
 
+$('#startTime').timepicker();
+
+$('#endTime').timepicker();
 // $('#venue-search-btn').click(function(e){
 //   e.preventDefault();
 //   var input = $("#search-input");

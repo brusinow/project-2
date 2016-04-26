@@ -98,9 +98,25 @@ app.get('/today', function(req, res) {
 
 
 app.get('/new-event', function(req, res){
+   if(req.currentUser) {
   res.render('new-event', {alerts: req.flash()});
+  } else {
+    req.flash('danger', 'You must be logged in, buddy...');
+    res.redirect('/');
+  }
 });
 
+app.get('/new-itin', function(req, res){
+     if(req.currentUser) {
+  db.event.findAll({where: {groupId: req.currentUser.groupId}}).then(function(events){
+    // console.log(events);
+  res.render('new-itin', {events: events, alerts: req.flash()});
+  });
+    } else {
+      req.flash('danger', 'You must be logged in, buddy...');
+      res.redirect('/');
+    }
+});
 
 app.get('/new-event/result', function(req, res){
   var query = req.query.q;
@@ -123,19 +139,31 @@ app.get('/new-event/result/:id', function(req, res){
   console.log(id);
 })
 
-app.post('/new-event/result/', function(req, res){
+app.post('/new-event/submit', function(req, res){
   var venueDate = req.body.datepicker;
   var venueName = req.body.venue;
   var venueCity = req.body.city;
   var venueAddress = req.body.address;
   var venueInfo = req.body.info;
-  db.event.create({date: venueDate, venue: venueName, address: venueAddress, city: venueCity, info: venueInfo}).then(function(data){
+  var currentGroup = req.currentUser.groupId;
+  db.event.create({date: venueDate, venue: venueName, address: venueAddress, city: venueCity, info: venueInfo, groupId: currentGroup}).then(function(data){
     req.flash('default', 'Your event was created!');
     res.redirect('/settings')
   });
 });
 
-
+app.post('/new-itin/submit', function(req, res){
+  var startTimeItin = req.body.startTime;
+  var endTimeItin = req.body.endTime;
+  var taskItin = req.body.task;
+  var currentEvent = req.body.currentEventId;
+  console.log(req.body);
+  console.log("Current event should be "+currentEvent)
+  db.itinItem.create({startTime: startTimeItin, endTime: endTimeItin, task: taskItin, eventId: currentEvent}).then(function(data){
+    req.flash('default', 'Your itinerary item was created!');
+    res.redirect('/settings')
+  });
+});
 // app.post('/new-event/result/', function(req, res){
  
 // });
