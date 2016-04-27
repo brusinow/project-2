@@ -20,7 +20,8 @@ app.use("/static", express.static(__dirname + '/static'));
 app.use(session({
   secret: 'dsalkfjasdflkjgdfblknbadiadsnkl',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { secure: false }
 }));
 
 app.use(flash());
@@ -47,9 +48,13 @@ app.get('/', function(req, res){
   res.render('auth/login', {alerts: req.flash()});
 });
 
+
 app.get('/settings', function(req, res){
   if(req.currentUser) {
-  res.render('settings', {alerts: req.flash()});
+  db.group.findOne({where: {id: req.currentUser.groupId}}).then(function(group){
+    console.log(group);
+  res.render('settings', {group: group, alerts: req.flash()});
+});
 } else {
     req.flash('danger', 'You must be logged in, buddy...');
     res.redirect('/');

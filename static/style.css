@@ -187,6 +187,16 @@ body {
   font-weight: bold;
   text-align: center;
   margin-top: 15px;
+  padding-left: 0px;
+}
+
+#weather {
+  padding-right: 0px;
+}
+
+#weatherExtra {
+  color: #aaaaaa;
+  font-size: 12px;
 }
 
 #add-venue-form input {

@@ -54,8 +54,11 @@ function mode(array){
     return maxEl;
 }%>
 <div class="row">
-  <div class="col-xs-4 col-xs-offset-2 center-text" id="weather"><img src="http://openweathermap.org/img/w/<%=mode(imageArray)%>.png"></div>
-  <div class="col-xs-4 center-text" id="weatherText"><%=toFahrenheit(dailyAvg)%> °F</div>
+  <div class="col-xs-3 col-xs-offset-3 center-text" id="weather"><img src="http://openweathermap.org/img/w/<%=mode(imageArray)%>.png"></div>
+  <div class="col-xs-3 center-text" id="weatherText"><%=toFahrenheit(dailyAvg)%>°F</div>
+</div>
+<div class="row">
+  <div class="col-xs-6 col-xs-offset-3 center-text" id="weatherExtra">High:<%=toFahrenheit(dailyMax)%>° / Low: <%=toFahrenheit(dailyMin)%>°</div>
 </div>
  
 <% } %>
