@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>Road Warrior</title>
   <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick.css"/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.9.0/jquery.timepicker.min.css">
@@ -28,20 +29,21 @@
     <% } %>
 <%- body %>
 </div>
+<% if(currentUser){ %>
+<nav class="col-xs-12 navbar-inverse navbar-fixed-bottom">
+  <div class="row" id="bottomNav">
+    <div class="col-xs-4 text-center"><a href="/today"><i class="fa fa-home" aria-hidden="true"></i></a></div>
+    <div class="col-xs-4 text-center"><a href="/showlist"><i class="glyphicon glyphicon-menu-hamburger"></i></i></a></div>
+    <div class="col-xs-4 text-center"><a href="/settings"><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+  </div>
+</nav>
+<% } %>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.9/slick.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.9.0/jquery.timepicker.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="../static/bootstrap-datetimepicker.min.js"></script>
 <script src="../static/script.js"></script>
 </body>
 </html>
-<% if(currentUser){ %>
-  <div class="col-xs-12 navbar-inverse navbar-fixed-bottom">
-  <div class="row" id="bottomNav">
-    <div class="col-xs-4 text-center"><a href="/today"><i class="fa fa-home" aria-hidden="true"></i></a></div>
-    <div class="col-xs-4 text-center"><a href="/showlist"><i class="glyphicon glyphicon-menu-hamburger"></i></i></a></div>
-    <div class="col-xs-4 text-center"><a href="/settings"><i class="fa fa-cog" aria-hidden="true"></i></a></div>
-  </div>
-</div>
-<% } %>

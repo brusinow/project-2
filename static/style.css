@@ -43,6 +43,11 @@ span {
   font-weight:bold;
 }  
 
+.slick-slider { 
+  display: table; 
+  table-layout: fixed; 
+  width: 100%; 
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 

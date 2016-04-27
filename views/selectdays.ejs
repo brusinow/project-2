@@ -12,11 +12,6 @@
 </div>
 <% } %>
 <% if(event && event.lat && event.lng){ %>
-<% 
-  console.log(forecastTime);
-  function toFahrenheit(kelvin){
-  return Math.round(kelvin * (9/5) - 459.67);
-}%>
 <% var weatherArray = []; 
    var imageArray = [];
 %>
@@ -26,42 +21,24 @@
    <% imageArray.push(weatherData.list[i].weather[0].icon); %>
   <% } %> 
 <% } %> 
-<% console.log(imageArray) %>
+<% if(weatherArray.length > 0){ %>
 <% weatherArray.sort(function(a, b){return a-b}); 
 var dailyMax = weatherArray[weatherArray.length - 1];
 var dailyMin = weatherArray[0];
 var dailyAvg = (weatherArray[3] + weatherArray[4])/2;
+%>
 
-function mode(array){
-    if(array.length == 0)
-      return null;
-    var modeMap = {};
-    var maxEl = array[0], maxCount = 1;
-    for(var i = 0; i < array.length; i++)
-    {
-      var el = array[i];
-      if(modeMap[el] == null)
-        modeMap[el] = 1;
-      else
-        modeMap[el]++;  
-      if(modeMap[el] > maxCount)
-      {
-        maxEl = el;
-        maxCount = modeMap[el];
-      }
-    }
-    console.log(maxEl);
-    return maxEl;
-}%>
 <div class="row">
-  <div class="col-xs-3 col-xs-offset-3 center-text" id="weather"><img src="http://openweathermap.org/img/w/<%=mode(imageArray)%>.png"></div>
-  <div class="col-xs-3 center-text" id="weatherText"><%=toFahrenheit(dailyAvg)%>°F</div>
+  <div class="col-xs-3 col-xs-offset-3 center-text" id="weather"><img src="http://openweathermap.org/img/w/<%=util.mode(imageArray)%>.png"></div>
+  <div class="col-xs-3 center-text" id="weatherText"><%=util.toFahrenheit(dailyAvg)%>°F</div>
 </div>
 <div class="row">
-  <div class="col-xs-6 col-xs-offset-3 center-text" id="weatherExtra">High:<%=toFahrenheit(dailyMax)%>° / Low: <%=toFahrenheit(dailyMin)%>°</div>
+  <div class="col-xs-6 col-xs-offset-3 center-text" id="weatherExtra">High:<%=util.toFahrenheit(dailyMax)%>° / Low: <%=util.toFahrenheit(dailyMin)%>°</div>
 </div>
- 
+ <% } %>
 <% } %>
+
+
 
 <div class="row">
 <div class="col-xs-12">
@@ -71,50 +48,6 @@ function mode(array){
     <% event.itinItems.forEach(function(item){ %>
       <tr>
         <td><%= item.task %></td>
-        <%
-          function timeFormat(hours){
-  var letters = 'AM'
-  var minutes = '00'
-if (hours !== 0 && hours < 12){
-  letters = 'AM';
-}
-else if (hours >= 12 && hours < 24){
-  hours = hours - 12;
-  letters = 'PM';
-}
-else if (hours >= 24 && hours < 36){
-  hours = hours -24;
-  letters = 'AM';
-}
-else if (hours === 0) {
-        hours = 12;
-        letters = 'AM';
-    }
-else {
-  hours = 0;
-  letters = 'error'
-}
-  if (hours - Math.floor(hours) === 0){
-    minutes = '00'; 
-  }
-  else if (hours - Math.floor(hours) === .25){
-    hours = hours - .25;
-    minutes = '15'; 
-  }
-  else if (hours - Math.floor(hours) === .5){
-    hours = hours - .5;
-    minutes = '30'; 
-  }
-  else if (hours - Math.floor(hours) === .75){
-    hours = hours - .75;
-    minutes = '45'; 
-  }
-  else {
-    minutes = 'error'
-  }
-var completeTime = hours +":"+ minutes +" "+ letters;
-return completeTime;
-}
 
 
 
@@ -122,8 +55,9 @@ return completeTime;
 
 
 
-         %>
-        <td style="text-align: right"><%=timeFormat(item.startTime) + ' - '%><%=timeFormat(item.endTime)%></td>
+
+        
+        <td style="text-align: right"><%=util.timeFormat(item.startTime) + ' - '%><%=util.timeFormat(item.endTime)%></td>
       </tr>
       <% }) %>
   

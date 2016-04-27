@@ -6,7 +6,7 @@ var request = require('request');
 var flash = require('connect-flash');
 var db = require("./models");
 var moment = require('moment');
-
+var util = require('./util/util');
     
 var app = express();
 
@@ -23,6 +23,11 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false }
 }));
+
+app.use(function(req, res, next){
+  res.locals.util = util;
+  next()
+});
 
 app.use(flash());
 
