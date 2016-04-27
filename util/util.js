@@ -66,5 +66,28 @@ module.exports = {
     }
   var completeTime = hours +":"+ minutes +" "+ letters;
   return completeTime;
+  },
+
+  momentDate: function(date){
+  var month = date.slice(0,2);
+  var day = date.slice(3,5);
+  var year = date.slice(6,10);
+  var forecastTime = year + '-' + month + '-' + day;
+  var thisEventDate = moment(forecastTime).format('MMMM Do, YYYY');
+  return thisEventDate;
+  }, 
+
+  momentDayOfWeek: function(date){
+  var month = date.slice(0,2);
+  var day = date.slice(3,5);
+  var year = date.slice(6,10);
+  var forecastTime = year + '-' + month + '-' + day;
+  var dateForDow = moment(forecastTime);
+  var thisDayOfWeek = dateForDow.format('dddd');
+  return thisDayOfWeek;
   }
+
+
+
+
 };

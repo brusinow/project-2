@@ -2,14 +2,38 @@
      <% if (events){ %>
       <table class="table table-striped">
       <tbody>
+      <% var nowFormat = moment(); %>
       <% events.forEach(function(event){ %>
+      
+      <!-- var eachDate = event.date;
+      var month = eachDate.slice(0,2);
+      var day = eachDate.slice(3,5);
+      var year = eachDate.slice(6,10);
+      var forecastTime = year + '-' + month + '-' + day;
+      var thisEventDate = moment(forecastTime).format('MMMM Do, YYYY');
+      var dateForDow = moment(forecastTime);
+      var thisDayOfWeek = dateForDow.format('dddd');
+ -->
+      <%
+        var month = event.date.slice(0,2);
+        var day = event.date.slice(3,5);
+        var year = event.date.slice(6,10);
+        var forecastTime = year + '-' + month + '-' + day;
+        var thisEventDate = moment(forecastTime).format('MMMM Do, YYYY');
+        var dateForDow = moment(forecastTime);
+        var thisDayOfWeek = dateForDow.format('dddd');
+        var difference = dateForDow.diff(nowFormat);
+%>
+<% if(difference > -172800000){ %>
       <tr>
-      <td><%=event.date%></td>
+      <td><span style="font-size: 14px;"><%=thisDayOfWeek%></span><br><span style="font-weight: bold;"><%=thisEventDate%></span></td>
       <td><a href="/showlist/<%=event.id%>"><%=event.venue%><br><%=event.city%></a></td>
       </tr>
+      <% } %>
            <% }) %>
       </tbody>
       </table>
+      
     <% } else{%>
     <h2>You have no events. :-(</h2>
     <% } %>

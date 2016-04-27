@@ -1,0 +1,77 @@
+<div>
+  <h2 class="text-center">Edit/Delete an Itinerary Item</h2>
+</div>
+<div class="row" style="margin-top: 50px">
+ 
+  <form method="POST" id="add-itin-form" action='/new-itin/submit' role="form">
+  <div class="form-group">
+    <select id="itin-select" class="center selectpicker" name="currentEventId">
+    <% if (events){ %>
+
+       <% events.forEach(function(event){ %>
+    
+        <option value="<%=event.id%>"><%=event.date%> (<%=event.venue%>,<%=event.city%>)</option>
+    
+    <% }) %>
+    </select>
+    <div class="row">
+    <div class="col-xs-12">
+    <table class="table table-striped" style="margin-top: 40px">
+    <tbody>
+    <% if(events){ %>
+    <% events[0].itinItems.forEach(function(item){ %>
+    
+      <tr attr="<%=item.id%>">
+        <td><a href='/edit-itin/delete/<%=item.id%>'>Delete</a> | <a href='/edit-itin/edit/<%=item.id%>'>Edit</a></td>
+        <td ><%= item.task %></td>
+        
+        <td style="text-align: right"><%=util.timeFormat(item.startTime) + ' - '%><%=util.timeFormat(item.endTime)%></td>
+      </tr>
+      <% }) %>
+  
+    
+
+ 
+    </tbody>
+  </table>
+</div>
+</div>
+
+
+  <% } else {%>
+    <table class="table table-striped">
+    <tbody>
+    <tr>
+      <td>
+        <h2 class="center-text">No items scheduled today</h2>
+      </td>
+    </tr>
+    </tbody>
+    </table>
+
+<% } %>
+
+
+      
+
+    
+     <%} else {%>
+    <option>You have no events scheduled</option>
+    <% } %>
+    
+   
+   
+  </div>
+</div>
+<button type="submit" id="add-venue-btn" class="btn btn-default">Submit</button>
+</form>
+
+
+</div>
+  <div style="margin-top: 40px" class="row">
+    <div class="col-xs-12">
+      <div id="venue-list">
+    </div>
+  </div> 
+</div>
+</div>

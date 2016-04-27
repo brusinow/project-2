@@ -1,4 +1,40 @@
+$('#itin-select').change(function() {
+  $("table tbody").html("");
+  $.ajax({
+    url: '/edit-itinChange',
+    method: 'GET',
+    success: function(xhr, status, data){
 
+      console.log(status);
+      if(status === 'success'){
+    
+        console.log(data);
+        // console.log(data.responseJSON.results.length);
+       
+        
+      }
+    }
+  }); 
+});
+
+
+
+
+// $('#itin-select').change(function() {
+
+//   $.get({
+//         url: '/edit-itin',
+//         data: {events: events}, 
+//         success: function(response){
+//            console.log('ajax received events are '+ events);
+//            console.log('success');
+//         }
+//     });
+//   var newRow = $("<tr><td><td/><td><td/><td><td/></tr>");
+//   ("table tbody").append(newRow)
+  
+    
+// });
 
 function formatAMPM(date) {
   var hours = date.getHours();

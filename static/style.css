@@ -20,9 +20,12 @@ td {
   font-size: 12pt;
 }
 
+h3 {
+  font-weight: bold;
+}
+
 h4 {
   font-size: 18px;
-  font-weight: bold;
 }
 
 p {
@@ -122,12 +125,13 @@ body {
 ------------------------------------------------------------- */
 
 .date {
-  font-size:18px;
-  font-weight:bold;
-  text-align:center;
-  margin-bottom: 8px;
+  
 } 
 
+.date-name h4 {
+  font-weight: normal;
+  font-size: 18px;
+}
 #topNav {
   padding:15px;
 }

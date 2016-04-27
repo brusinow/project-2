@@ -96,6 +96,9 @@ app.get('/today', function(req, res) {
              + MyDate.getFullYear();
     var nowText = moment().format('MMMM Do, YYYY');
 
+    var dateForDow = moment();
+    var thisDayOfWeek = dateForDow.format('dddd');
+
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
 db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
   if(event && event.lng && event.lat){
@@ -107,11 +110,11 @@ db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[
       
   request(api + lat + lng + '&appid=' + key, function(err, response, body) {
   var weatherData = JSON.parse(body);
-  res.render('showday', {date: nowText, event: event, weatherData: weatherData});
+  res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek});
   });
   } else {
     var weatherData = {lon: 0, lat: 0};
-    res.render('showday', {date: nowText, event: event, weatherData: weatherData});
+    res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek});
     }
   });
   } else {
@@ -134,7 +137,7 @@ app.get('/new-event', function(req, res){
 app.get('/new-itin', function(req, res){
      if(req.currentUser) {
   db.event.findAll({where: {groupId: req.currentUser.groupId}}).then(function(events){
-    // console.log(events);
+    console.log("events should be ",events);
   res.render('new-itin', {events: events, alerts: req.flash()});
   });
     } else {
@@ -143,10 +146,35 @@ app.get('/new-itin', function(req, res){
     }
 });
 
+app.get('/edit-itin', function(req, res){
+  
+     if(req.currentUser) {
+  db.event.findAll({where: {groupId: req.currentUser.groupId}, include:[db.itinItem], order: '"date" ASC'}).then(function(events){
+  res.render('edit-itin', {events: events, alerts: req.flash()});
+  });
+    } else {
+      req.flash('danger', 'You must be logged in, buddy...');
+      res.redirect('/');
+    }
+  });
+
+app.get('/edit-itinChange', function(req, res){
+  
+     if(req.currentUser) {
+  db.event.findAll({where: {groupId: req.currentUser.groupId}, include:[db.itinItem], order: '"date" ASC'}).then(function(events){
+  res.status(200).send({events: events, alerts: req.flash()}); 
+  });
+    } else {
+      req.flash('danger', 'You must be logged in, buddy...');
+      res.redirect('/');
+    }
+  });
+
 app.get('/showlist', function(req, res){
   if(req.currentUser) {
-  db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC'}).then(function(events){
-    res.render('showlist', {events: events})
+  db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC, "startTime" ASC'}).then(function(events){
+
+    res.render('showlist', {events: events, moment: moment})
  });
  } else {
     req.flash('danger', 'You must be logged in, buddy...');
@@ -215,6 +243,10 @@ db.event.findOne({where: {id: req.params.id, groupId: req.currentUser.groupId},i
   var year = eachDate.slice(6,10);
   var forecastTime = year + '-' + month + '-' + day;
   var thisEventDate = moment(forecastTime).format('MMMM Do, YYYY');
+  var dateForDow = moment(forecastTime);
+  var thisDayOfWeek = dateForDow.format('dddd');
+  
+  console.log(thisDayOfWeek);
 
   if(event && event.lng && event.lat){
 
@@ -226,7 +258,7 @@ db.event.findOne({where: {id: req.params.id, groupId: req.currentUser.groupId},i
       
   request(api + lat + lng + '&appid=' + key, function(err, response, body) {
   var weatherData = JSON.parse(body);
-  res.render('selectdays', {date: thisEventDate, event: event, weatherData: weatherData, forecastTime: forecastTime});
+  res.render('selectdays', {date: thisEventDate, event: event, weatherData: weatherData, forecastTime: forecastTime, dayName: thisDayOfWeek});
   });
   } else {
     var weatherData = {lon: 0, lat: 0};
