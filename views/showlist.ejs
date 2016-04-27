@@ -1,0 +1,15 @@
+    <h3 class="center-text">Upcoming Schedule</h3>
+     <% if (events){ %>
+      <table class="table table-striped">
+      <tbody>
+      <% events.forEach(function(event){ %>
+      <tr>
+      <td><%=event.date%></td>
+      <td><a href="/showlist/<%=event.id%>"><%=event.venue%><br><%=event.city%></a></td>
+      </tr>
+           <% }) %>
+      </tbody>
+      </table>
+    <% } else{%>
+    <h2>You have no events. :-(</h2>
+    <% } %>

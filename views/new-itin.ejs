@@ -7,7 +7,7 @@
   <div class="form-group">
     <select class="center selectpicker" name="currentEventId">
     <% if (events){ %>
-      <% events.forEach(function(event, i){ %>
+      <% events.forEach(function(event){ %>
     
         <option value="<%=event.id%>"><%=event.date%> (<%=event.venue%>,<%=event.city%>)</option>
     

@@ -1,7 +1,7 @@
 
 
 <div class="row">
- <div class="col-xs-12 center-text"><h3><%= date %></h3></div>
+  <div class="col-xs-12 center-text"><h3><%= date %></h3></div>
 </div>
 <% if(event){ %>
 <div class="row">
@@ -13,16 +13,51 @@
 <% } %>
 <% if(event && event.lat && event.lng){ %>
 <% 
+  console.log(forecastTime);
   function toFahrenheit(kelvin){
   return Math.round(kelvin * (9/5) - 459.67);
 }%>
-<% console.log(weatherData); %>
-<% if (weatherData.lon !=0 ){%>
+<% var weatherArray = []; 
+   var imageArray = [];
+%>
+<% for (var i = 0; i<weatherData.list.length; i++){ %>
+   <% if(weatherData.list[i].dt_txt.indexOf(forecastTime) > -1){ %>
+   <% weatherArray.push(weatherData.list[i].main.temp); %>
+   <% imageArray.push(weatherData.list[i].weather[0].icon); %>
+  <% } %> 
+<% } %> 
+<% console.log(imageArray) %>
+<% weatherArray.sort(function(a, b){return a-b}); 
+var dailyMax = weatherArray[weatherArray.length - 1];
+var dailyMin = weatherArray[0];
+var dailyAvg = (weatherArray[3] + weatherArray[4])/2;
+
+function mode(array){
+    if(array.length == 0)
+      return null;
+    var modeMap = {};
+    var maxEl = array[0], maxCount = 1;
+    for(var i = 0; i < array.length; i++)
+    {
+      var el = array[i];
+      if(modeMap[el] == null)
+        modeMap[el] = 1;
+      else
+        modeMap[el]++;  
+      if(modeMap[el] > maxCount)
+      {
+        maxEl = el;
+        maxCount = modeMap[el];
+      }
+    }
+    console.log(maxEl);
+    return maxEl;
+}%>
 <div class="row">
-  <div class="col-xs-4 col-xs-offset-2 center-text" id="weather"><img src="http://openweathermap.org/img/w/<%=weatherData.weather[0].icon%>.png"></div>
-  <div class="col-xs-4 center-text" id="weatherText"><%=toFahrenheit(weatherData.main.temp)%> °F</div>
+  <div class="col-xs-4 col-xs-offset-2 center-text" id="weather"><img src="http://openweathermap.org/img/w/<%=mode(imageArray)%>.png"></div>
+  <div class="col-xs-4 center-text" id="weatherText"><%=toFahrenheit(dailyAvg)%> °F</div>
 </div>
-<% } %>  
+ 
 <% } %>
 
 <div class="row">
@@ -103,7 +138,7 @@ return completeTime;
     <tbody>
     <tr>
       <td>
-        <h2 class="center-text">No items scheduled today</h2>
+      <h2 class="center-text">No items scheduled today</h2>
       </td>
     </tr>
     </tbody>
