@@ -86,9 +86,27 @@ app.get('/today', function(req, res) {
              + ('0' + MyDate.getDate()).slice(-2) + '/'
              + MyDate.getFullYear();
     var nowText = moment().format('MMMM Do, YYYY');
+
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
+
     db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
-    res.render('showday', {date: nowText, event: event});
+      if(event && event.lng && event.lat){
+      var api = 'http://api.openweathermap.org/data/2.5/weather?'; 
+      var lat = 'lat=' + event.lat;
+      var lng = '&lon=' + event.lng;
+      
+      var key = process.env.WEATHER_KEY;
+      
+    request(api + lat + lng + '&appid=' + key, function(err, response, body) {
+    var weatherData = JSON.parse(body);
+  
+     
+    res.render('showday', {date: nowText, event: event, weatherData: weatherData});
+  });
+  } else {
+    var weatherData = {lon: 0, lat: 0};
+    res.render('showday', {date: nowText, event: event, weatherData: weatherData});
+  }
   });
   } else {
     req.flash('danger', 'You must be logged in, buddy...');

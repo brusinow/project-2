@@ -1,7 +1,7 @@
 /*
 *  html5 doctor css reset | http://html5doctor.com/html-5-reset-stylesheet
 */
-html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}
+html,body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,abbr,address,cite,code,del,dfn,em,img,ins,kbd,q,samp,small,strong,sub,sup,var,b,i,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,figcaption,figure,footer,header,hgroup,menu,nav,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;outline:0;vertical-align:baseline;background:transparent}
 body{line-height:1}
 article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
 nav ul{list-style:none}
@@ -22,15 +22,26 @@ td {
 
 h4 {
   font-size: 18px;
+  font-weight: bold;
 }
 
 p {
-  font-size: 12px;
+  font-size: 14px;
+}
+
+span {
+  font-weight: bold;
 }
 
 #button-link {
     text-decoration: none;
   }
+
+.small-underlined-header {
+  text-decoration: underline;
+  font-size:16px;
+  font-weight:bold;
+}  
 
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -169,6 +180,13 @@ body {
 .my-heading {
   text-decoration: underline;
   font-weight: bold;
+}
+
+#weatherText {
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 15px;
 }
 
 #add-venue-form input {

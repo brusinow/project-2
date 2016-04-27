@@ -5,7 +5,7 @@
  
   <form method="POST" id="add-itin-form" action='/new-itin/submit' role="form">
   <div class="form-group">
-    <select class="inline center" name="currentEventId">
+    <select class="center selectpicker" name="currentEventId">
     <% if (events){ %>
       <% events.forEach(function(event, i){ %>
     
@@ -20,7 +20,7 @@
     <label class="sr-only" for="task">Task:</label>
     <input type="text" name="task" class="form-control" id="task" placeholder="Itinerary Task">
     <div class="center">
-    <select class="dropdown-toggle inline center" name="startTime">
+    <select class="selectpicker inline center" name="startTime">
       <option value="0">12:00 AM</option>
       <option value=".25">12:15 AM</option>
       <option value=".5">12:30 AM</option>
@@ -148,7 +148,7 @@
       <option value="30.75">6:45 AM</option>
       <option value="31">7:00 AM</option>
     </select>
-    <h4 class="dropdown-toggle inline center"> until </h4>
+    <h4 class="selectpicker inline center"> until </h4>
     <select class="inline" name="endTime">
       <option value="0">12:00 AM</option>
       <option value=".25">12:15 AM</option>
