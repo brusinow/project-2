@@ -54,15 +54,20 @@ app.get('/', function(req, res){
 
 
 app.get('/settings', function(req, res){
-  if(req.currentUser) {
+  if(req.currentUser && req.currentUser.groupId) {
   db.group.findOne({where: {id: req.currentUser.groupId}}).then(function(group){
     console.log(group);
   res.render('settings', {group: group, alerts: req.flash()});
 });
-} else {
-    req.flash('danger', 'You must be logged in, buddy...');
+} else if (req.currentUser && !req.currentUser.groupId){
+    res.redirect('/auth/group');
+   req.flash('danger', 'You must be a member of a group.');
+    
+  } else {
     res.redirect('/');
-  }
+    req.flash('danger', 'You must be logged in, buddy...');
+    
+ }
 });
 
 
@@ -77,7 +82,8 @@ app.post('/', function(req, res) {
       req.session.userId = user.id;
       res.redirect('/today');
     } else {
-      res.send('email and/or password invalid');
+      req.flash('danger', 'Your email or password is invalid. Try again.');
+      res.redirect('/');
     }
   });
 });
@@ -85,7 +91,7 @@ app.post('/', function(req, res) {
 
 
 app.get('/today', function(req, res) {
-  if(req.currentUser) {
+  if(req.currentUser && req.currentUser.groupId) {
     var MyDate = new Date();
     var now;
     MyDate.setDate(MyDate.getDate());
@@ -99,27 +105,34 @@ app.get('/today', function(req, res) {
     var thisDayOfWeek = dateForDow.format('dddd');
 
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
-db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
-  if(event && event.lng && event.lat){
-  var api = 'http://api.openweathermap.org/data/2.5/weather?'; 
-  var lat = 'lat=' + event.lat;
-  var lng = '&lon=' + event.lng;
-  
-  var key = process.env.WEATHER_KEY;
+    db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
+      if(event && event.lng && event.lat){
+      var api = 'http://api.openweathermap.org/data/2.5/weather?'; 
+      var lat = 'lat=' + event.lat;
+      var lng = '&lon=' + event.lng;
       
-  request(api + lat + lng + '&appid=' + key, function(err, response, body) {
-  var weatherData = JSON.parse(body);
-  res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek});
-  });
+      var key = process.env.WEATHER_KEY;
+          
+      request(api + lat + lng + '&appid=' + key, function(err, response, body) {
+      var weatherData = JSON.parse(body);
+      res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek, alerts: req.flash()});
+      });
+      } else {
+        var weatherData = {lon: 0, lat: 0};
+        res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek, alerts: req.flash()});
+        }
+      });
+  } else if (req.currentUser && !req.currentUser.groupId){
+    
+   req.flash('danger', 'You must be a member of a group.');
+   res.redirect('/auth/group');
+    
   } else {
-    var weatherData = {lon: 0, lat: 0};
-    res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek});
-    }
-  });
-  } else {
+    
     req.flash('danger', 'You must be logged in, buddy...');
     res.redirect('/');
-  }
+    
+ }
 });
 
 
@@ -250,15 +263,19 @@ app.put('/edit-event/show', function(req, res){
 
 
 app.get('/showlist', function(req, res){
-  if(req.currentUser) {
+  if(req.currentUser && req.currentUser.groupId) {
   db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC'}).then(function(events){
 
-    res.render('showlist', {events: events, moment: moment})
+    res.render('showlist', {events: events, moment: moment, alerts: req.flash()})
  });
- } else {
-    req.flash('danger', 'You must be logged in, buddy...');
-    res.redirect('/');
- }
+  } else if (req.currentUser && !req.currentUser.groupId){
+  req.flash('danger', 'You must be a member of a group.');
+    res.redirect('/auth/group');
+     
+  } else {
+  req.flash('danger', 'You must be logged in, buddy...');
+  res.redirect('/');
+  }
 });
 
 // app.get('/new-event/result', function(req, res){
@@ -290,7 +307,7 @@ app.post('/new-event/submit', function(req, res){
   var venueInfo = req.body.info;
   var currentGroup = req.currentUser.groupId;
   db.event.create({date: venueDate, venue: venueName, address: venueAddress, city: venueCity, info: venueInfo, groupId: currentGroup}).then(function(data){
-    req.flash('default', 'Your event was created!');
+    req.flash('info', 'Your event was created!');
     res.redirect('/settings')
   });
 });
@@ -303,7 +320,7 @@ app.post('/new-itin/submit', function(req, res){
   console.log(req.body);
   console.log("Current event should be "+currentEvent)
   db.itinItem.create({startTime: startTimeItin, endTime: endTimeItin, task: taskItin, eventId: currentEvent}).then(function(data){
-    req.flash('default', 'Your itinerary item was created!');
+    req.flash('info', 'Your itinerary item was created!');
     res.redirect('/settings')
   });
 });

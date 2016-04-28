@@ -10,12 +10,12 @@ router.get('/signup', function(req, res) {
 });
 
 router.get('/group', function(req, res) {
-  // if(req.currentUser) {
-  res.render('auth/group');
- // } else {
- //    req.flash('danger', 'You must be logged in, buddy...');
- //    res.redirect('/');
- //  }
+  if(req.currentUser) {
+  res.render('auth/group', {alerts: req.flash()});
+ } else {
+    req.flash('danger', 'You must be logged in, buddy...');
+    res.redirect('/');
+  }
 });
 
 router.post('/signup', function(req, res) {
@@ -55,9 +55,9 @@ router.post('/joingroup', function(req, res) {
       user.updateAttributes({groupId: group.id});
       res.redirect('/today');
       } else {
-        req.flash('danger', 'A group by that name already exists.');
+        
         res.redirect('joingroup').catch(function(err){
-        res.send(err);
+         req.flash('danger', 'A group by that name already exists.'); 
         }); 
       }
     });
@@ -69,8 +69,9 @@ router.get('/addgroup', function(req, res) {
  if(req.currentUser) {
   res.render('auth/addgroup');
  } else {
-    req.flash('danger', 'You must be logged in, buddy...');
     res.redirect('/');
+    req.flash('danger', 'You must be logged in, buddy...');
+   
   }
 });
 

@@ -13,7 +13,7 @@
   <div class="form-group">
     <input type="text" name="id" class="hidden" id="hidden-id" value="<%= event.id %>">
     <label class="sr-only" for="datepicker">Date:</label>
-    <input type="text" name="event-date" id="event-date" value="<%= event.date %>" placeholder="Event Date">
+    <input type="text" class="datepicker" name="event-date" id="datepicker" value="<%= event.date %>" placeholder="Event Date">
     <label class="sr-only" for="venue-name">Venue Name:</label>
     <input type="text" name="event-venue-name" class="form-control" id="event-venue-name" value="<%= event.venue %>" placeholder="Venue Name">
     <label class="sr-only" for="venue-city">Venue City:</label>
@@ -21,7 +21,7 @@
     <label class="sr-only" for="venue-address">Venue Address:</label>
     <input type="text" name="event-address" class="form-control" id="event-address" value="<%= event.address %>" placeholder="Complete Venue Address">
     <label class="sr-only" for="venue-info">Assorted Information:</label>
-    <textarea class="form-control" name="event-info" rows="5" id="event-info" value="<%= event.info %>" placeholder="Venue Information"></textarea>
+    <textarea class="form-control" name="event-info" rows="5" id="event-info" placeholder="Venue Information"><%= event.info %></textarea>
 </div>
   </div>
   <button type="submit" id="edit-venue-btn" class="edit-event-submit btn btn-default">Submit</button>

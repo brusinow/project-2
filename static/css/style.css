@@ -262,7 +262,7 @@ input, label {
   list-style-type: none;
 }
 
-#datepicker {
+.datepicker {
   padding: 6px 12px;
   width: 100%;
   font-size: 14px;

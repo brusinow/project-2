@@ -65,7 +65,7 @@ $(document).on( 'click', '.delete-link-event', function(e){
 $(document).on( 'click', '.edit-event-submit', function(e){
     e.preventDefault();
     var myID = $('#hidden-id').val();
-    var date = $('#event-date').val();
+    var date = $('#datepicker').val();
     var name = $('#event-venue-name').val();
     var city = $('#event-city').val();
     var address = $('#event-address').val();
