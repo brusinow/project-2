@@ -5,13 +5,13 @@
     "dialect": "postgres"
   },
   "test": {
-    "database": "database_test",
+    "database": "road-warrior",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   },
   "production": {
-    "database": "database_production",
+    "database": "road-warrior",
     "host": "127.0.0.1",
-    "dialect": "mysql"
+    "dialect": "postgres"
   }
 }
