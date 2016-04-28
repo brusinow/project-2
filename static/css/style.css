@@ -160,6 +160,11 @@ body {
   color: white;
 }
 
+.transparent-btn:active {
+  background-color: rgba(206, 209, 211, 0.39);
+  border: 2px solid white;
+  color: white;
+}
 
 
 input, label {
