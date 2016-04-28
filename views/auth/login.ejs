@@ -1,25 +1,34 @@
-<body id="group-page">
+<body class="auth-page">
 <div class="roadwarrior"></div>
-<div class="row" style="margin-top: 50px">
-  <div class="col-xs-12">
   <form method="POST" role="form">
-  <div class="form-group">
-    <label class="sr-only" for="exampleInputEmail3">Email address</label>
-    <input type="email" name="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+  <div class="row">
+    <div class="form-group col-xs-12">
+      <label class="sr-only" for="exampleInputEmail3">Email address</label>
+      <input type="email" name="email" class="form-control" id="exampleInputEmail3" placeholder="Email">
+    </div>
   </div>
-  <div class="form-group">
-    <label class="sr-only" for="exampleInputPassword3">Password</label>
-    <input type="password" name="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+  <div class="row">
+    <div class="form-group col-xs-12">
+      <label class="sr-only" for="exampleInputPassword3">Password</label>
+      <input type="password" name="password" class="form-control" id="exampleInputPassword3" placeholder="Password">
+    </div>
   </div>
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" style="color: white;"> Remember me
-    </label>
+  <div class="row">
+    <div class="checkbox col-xs-12">
+      <label>
+        <input type="checkbox"> <span style="color: white;">Remember me</span>
+      </label>
+    </div>
   </div>
-  <button type="submit" class="col-xs-5 btn btn-default">Sign in</button>
-  <a class="col-xs-5 button-link" href="auth/signup"><button class="btn btn-default">Create an Account</button></a>
-</form>
-  
+  <div class="row">
+    <div class="col-xs-12 center-button">
+      <button type="submit" class="btn btn-default transparent-btn btn-lg">Sign in</button>
+    </div>
   </div>
-</div>
+  </form>
+    <div class="row">
+      <div class="col-xs-12 center-text">
+        <a class="button-link" href="auth/signup">Don't have an account? Create one!</a>
+      </div>
+    </div>
 </body>

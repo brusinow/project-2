@@ -16,6 +16,9 @@ table{border-collapse:collapse;border-spacing:0}
 hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}
 input,select{vertical-align:middle}
 
+input:-webkit-autofill {
+  background-color: rgba(197, 209, 221, 1.0) !important;
+}
 
 h3 {
   font-weight: bold;
@@ -143,6 +146,14 @@ body {
   color: white;
 }
 
+.transparent-btn:hover {
+  background-color: rgba(206, 209, 211, 0.39);
+  border: 2px solid white;
+  color: white;
+}
+
+
+
 input, label {
     display:block;
     margin-bottom: 5px;
@@ -150,6 +161,15 @@ input, label {
 .date-name h4 {
   font-weight: normal;
   font-size: 18px;
+}
+
+.roadwarrior {
+  background-image: url('/img/roadwarrior.png') !important;
+  background-size:contain;
+  background-repeat:no-repeat;
+  width:340px;
+  height: 100px;
+  margin-top: 75px;
 }
 
 .itin-delete-table {
@@ -164,25 +184,21 @@ input, label {
   border-radius: 4px;
   padding: 4px 4px;
 }
-#group-page {
+.auth-page {
   width: 100%;
   height: 100%;
   background-image: url('/img/group-img.jpg');
   background-size: cover;
 }
-.roadwarrior {
-  background-image: url('/img/roadwarrior.png') !important;
-  background-size:contain;
-  background-repeat:no-repeat;
-  width:340px;
-  height: 100px;
-  margin-top: 75px;
-}
 
-.group-page button {
+.auth-page button {
   font-size: 24px; 
 }
 
+.auth-page a {
+  font-size: 16px; 
+  color: white;
+}
 
 .settings button {
   font-weight: bold;
