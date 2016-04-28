@@ -177,7 +177,7 @@ input, label {
   background-repeat:no-repeat;
   width:340px;
   height: 100px;
-  margin-top: 25px;
+  margin : 25px auto 0 auto; }
 }
 
 .itin-delete-table {
@@ -208,6 +208,11 @@ input, label {
   color: white;
 }
 
+.auth-page h4 {
+  font-size: 14px; 
+  color: white;
+}
+
 .settings button {
   font-weight: bold;
   border: 1px solid black;
@@ -220,6 +225,11 @@ input, label {
 .settings h4 {
   font-weight: bold;
 }
+
+.settings a {
+  text-decoration: none;
+}
+
 
 #topNav {
   padding:15px;

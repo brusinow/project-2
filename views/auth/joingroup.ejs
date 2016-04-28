@@ -1,7 +1,33 @@
+<body class="auth-page">
+<div class="roadwarrior" ></div>
 <form method="POST" role="form">
-  <div class="form-group">
-    <label class="sr-only" for="group">Group Name</label>
-    <input type="text" name="group" class="form-control" placeholder="Group Name">
+  <div class="row" style="margin-top: 50px">
+    <div class="col-xs-12 center-text">
+      <h4>Enter the group name you would like to join.</h4>
+    </div>
   </div>
-  <button type="submit" class="btn btn-default">Submit</button>
+
+  <div class="row" style="margin-top: 7px;">
+    <div class="col-xs-10 col-xs-offset-1">
+      <div class="form-group">
+        <label class="sr-only" for="exampleInputEmail3">Group Name</label>
+        <input type="text" name="group" class="form-control" placeholder="Existing Group Name">
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 center-button">  
+      <button type="submit" class="btn btn-default transparent-btn btn-lg">Submit</button>
+    </div>
+  </div>  
 </form>
+<div class="row" style="margin-top: 25px;">
+  <div class="col-xs-12 center-text">
+    <a href="/auth/addgroup">Want to create a group instead? Click here.</a>
+  </div>
+</div>
+</body>
+
+
+
