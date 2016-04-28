@@ -1,7 +1,4 @@
-var goFS = document.getElementById("goFS");
-   goFS.addEventListener("click", function() {
-      document.body.requestFullscreen();
-   }, false);
+setTimeout(function () {   window.scrollTo(0, 1); }, 500);
 
 
 $('#itin-select').change(function() {
