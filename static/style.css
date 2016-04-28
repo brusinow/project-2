@@ -33,6 +33,10 @@ span {
   font-weight: bold;
 }
 
+.hidden {
+  display: none !important;
+}
+
 #button-link {
     text-decoration: none;
   }
@@ -124,6 +128,20 @@ body {
 .date {
   
 } 
+.gray-background {
+  background-color:#444444;
+  border-color: #222222;
+}
+
+.white {
+  color:#ffffff;
+}
+
+.transparent-btn {
+  background-color: rgba(0, 0, 0, 0);
+  border: 2px solid white;
+  color: white;
+}
 
 input, label {
     display:block;
@@ -146,9 +164,33 @@ input, label {
   border-radius: 4px;
   padding: 4px 4px;
 }
+#group-page {
+  width: 100%;
+  height: 100%;
+  background-image: url('/img/group-img.jpg');
+  background-size: cover;
+}
+.roadwarrior {
+  background-image: url('/img/roadwarrior.png') !important;
+  background-size:contain;
+  background-repeat:no-repeat;
+  width:340px;
+  height: 100px;
+  margin-top: 75px;
+}
+
+.group-page button {
+  font-size: 24px; 
+}
+
 
 .settings button {
   font-weight: bold;
+  border: 1px solid black;
+}
+
+.settings span {
+  font-size: 13px;
 }
 
 .settings h4 {

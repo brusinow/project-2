@@ -43,6 +43,47 @@ $(document).on( 'click', '.delete-link', function(e){
     });
 });
 
+$(document).on( 'click', '.delete-link-event', function(e){
+    e.preventDefault();
+    var myID = $(this).attr('attr');
+    console.log('click working and id ',myID);
+    $.ajax({
+        method:'DELETE',
+        url:'/edit-event/show',
+        data: {
+          id:myID
+        }
+    }).success(function(){
+       location.reload();
+        //redirect or update view
+    });
+});
+
+$(document).on( 'click', '.edit-event-submit', function(e){
+    e.preventDefault();
+    var myID = $('#hidden-id').val();
+    var date = $('#event-date').val();
+    var name = $('#event-venue-name').val();
+    var city = $('#event-city').val();
+    var address = $('#event-address').val();
+    var info = $('#event-info').val();
+    console.log('edit click working and id ',myID);
+    $.ajax({
+        method:'PUT',
+        url:'/edit-event/show/',
+        data: {
+          id: myID,
+          date: date,
+          venue: name,
+          city: city,
+          address: address,
+          info: info
+        }
+    }).success(function(){
+       window.location.assign("/settings");
+        //redirect or update view
+    });
+});
 
 // $('#itin-select').change(function() {
 

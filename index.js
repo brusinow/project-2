@@ -14,8 +14,7 @@ app.set('view engine', 'ejs');
 app.use(ejsLayouts);
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use("/", express.static(__dirname + '/views'));
-app.use("/static", express.static(__dirname + '/static'));
+app.use(express.static(__dirname + '/static'));
 
 app.use(session({
   secret: 'dsalkfjasdflkjgdfblknbadiadsnkl',
@@ -180,6 +179,75 @@ app.delete('/edit-itin/delete', function(req, res) {
     });
   });
 });
+
+// EDITING/DELETING EVENTS
+
+app.get('/edit-event', function(req, res){
+  
+     if(req.currentUser) {
+  db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC'}).then(function(events){
+  res.render('edit-event', {events: events, moment: moment, alerts: req.flash()});
+  });
+    } else {
+      req.flash('danger', 'You must be logged in, buddy...');
+      res.redirect('/');
+    }
+});
+
+
+app.delete('/edit-event/delete', function(req, res) {
+  var id = req.body.id;
+  console.log('entering delete route');
+  db.event.find({where: {id: id}}).then(function(id){
+    id.destroy().then(function(u){
+      res.send('success');
+    });
+  });
+});
+
+app.get('/edit-event/show/:id', function(req, res){
+  var id = req.params.id;
+  if(req.currentUser) {
+    db.event.findOne({where: {groupId: req.currentUser.groupId, id: id}}).then(function(event){
+      res.render('show-one-event', {event: event, moment: moment, alerts: req.flash()});
+    });
+  } else {
+      req.flash('danger', 'You must be logged in, buddy...');
+      res.redirect('/');
+    }
+});
+
+app.put('/edit-event/show', function(req, res){
+  var venueDate = req.body.date;
+  var venueName = req.body.venue;
+  var venueCity = req.body.city;
+  var venueAddress = req.body.address;
+  var venueInfo = req.body.info;
+  var id = req.body.id;
+  db.event.findOne({where: {groupId: req.currentUser.groupId, id: id}}).then(function(event){
+    if (event.date !== venueDate){
+      event.date = venueDate;
+    }
+    if (event.name !== venueName){
+      event.venue = venueName;
+    }
+    if (event.city !== venueCity){
+      event.city = venueCity;
+    }
+    if (event.address !== venueAddress){
+      event.address = venueAddress;
+    }
+    if (event.info !== venueInfo){
+      event.info = venueInfo;
+    }
+    event.save().then(function() {
+      res.send('success');
+    });
+  });
+});
+
+
+
 
 app.get('/showlist', function(req, res){
   if(req.currentUser) {

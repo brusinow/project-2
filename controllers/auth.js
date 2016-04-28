@@ -10,12 +10,12 @@ router.get('/signup', function(req, res) {
 });
 
 router.get('/group', function(req, res) {
-  if(req.currentUser) {
+  // if(req.currentUser) {
   res.render('auth/group');
- } else {
-    req.flash('danger', 'You must be logged in, buddy...');
-    res.redirect('/');
-  }
+ // } else {
+ //    req.flash('danger', 'You must be logged in, buddy...');
+ //    res.redirect('/');
+ //  }
 });
 
 router.post('/signup', function(req, res) {
@@ -29,6 +29,7 @@ router.post('/signup', function(req, res) {
     res.send(err);
   });
 });
+
 //trying to save groupId value to user table under current user
 router.post('/addgroup', function(req, res) {
   db.user.findById(req.currentUser.id).then(function(user){
