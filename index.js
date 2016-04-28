@@ -133,10 +133,11 @@ app.get('/new-event', function(req, res){
     res.redirect('/');
   }
 });
+// ------------------- Managing an Itinerary Item 
 
 app.get('/new-itin', function(req, res){
      if(req.currentUser) {
-  db.event.findAll({where: {groupId: req.currentUser.groupId}}).then(function(events){
+  db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC'}).then(function(events){
     console.log("events should be ",events);
   res.render('new-itin', {events: events, alerts: req.flash()});
   });
@@ -149,8 +150,8 @@ app.get('/new-itin', function(req, res){
 app.get('/edit-itin', function(req, res){
   
      if(req.currentUser) {
-  db.event.findAll({where: {groupId: req.currentUser.groupId}, include:[db.itinItem], order: '"date" ASC'}).then(function(events){
-  res.render('edit-itin', {events: events, alerts: req.flash()});
+  db.event.findAll({where: {groupId: req.currentUser.groupId}, include:[db.itinItem], order: '"date" ASC, "startTime" ASC'}).then(function(events){
+  res.render('edit-itin', {events: events, moment: moment, alerts: req.flash()});
   });
     } else {
       req.flash('danger', 'You must be logged in, buddy...');
@@ -158,21 +159,31 @@ app.get('/edit-itin', function(req, res){
     }
   });
 
-app.get('/edit-itinChange', function(req, res){
-  
+app.post('/edit-itinChange', function(req, res){
+  var id = req.body.currentEventId;
      if(req.currentUser) {
-  db.event.findAll({where: {groupId: req.currentUser.groupId}, include:[db.itinItem], order: '"date" ASC'}).then(function(events){
-  res.status(200).send({events: events, alerts: req.flash()}); 
+  db.event.findOne({where: {groupId: req.currentUser.groupId, id: id}, include:[db.itinItem], order: '"date" ASC'}).then(function(events){
+  res.send({events: events, alerts: req.flash()}); 
   });
     } else {
       req.flash('danger', 'You must be logged in, buddy...');
       res.redirect('/');
     }
   });
+
+app.delete('/edit-itin/delete', function(req, res) {
+  var id = req.body.id;
+  console.log('entering delete route');
+  db.itinItem.find({where: {id: id}}).then(function(id){
+    id.destroy().then(function(u){
+      res.send('success');
+    });
+  });
+});
 
 app.get('/showlist', function(req, res){
   if(req.currentUser) {
-  db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC, "startTime" ASC'}).then(function(events){
+  db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC'}).then(function(events){
 
     res.render('showlist', {events: events, moment: moment})
  });

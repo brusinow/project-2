@@ -16,9 +16,6 @@ table{border-collapse:collapse;border-spacing:0}
 hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}
 input,select{vertical-align:middle}
 
-td {
-  font-size: 12pt;
-}
 
 h3 {
   font-weight: bold;
@@ -128,10 +125,36 @@ body {
   
 } 
 
+input, label {
+    display:block;
+    margin-bottom: 5px;
+}
 .date-name h4 {
   font-weight: normal;
   font-size: 18px;
 }
+
+.itin-delete-table {
+  font-size: 12pt !important;
+}
+
+.itin-delete-table a {
+  font-size: 12px;
+  font-weight: bold;
+  color: #555555;
+  border: 1px solid #555555;
+  border-radius: 4px;
+  padding: 4px 4px;
+}
+
+.settings button {
+  font-weight: bold;
+}
+
+.settings h4 {
+  font-weight: bold;
+}
+
 #topNav {
   padding:15px;
 }

@@ -1,26 +1,37 @@
-<div>
-<h2 class="text-center">Add an Itinerary Item</h2>
+<div class="row" style="margin-top: 100px">
+  <div class="col-xs-12">
+    <h3 class="text-center">Add an Itinerary Item</h3>
+  </div>
 </div>
-<div class="row" style="margin-top: 50px">
- 
-  <form method="POST" id="add-itin-form" action='/new-itin/submit' role="form">
-  <div class="form-group">
-    <select class="center selectpicker" name="currentEventId">
-    <% if (events){ %>
-      <% events.forEach(function(event){ %>
-    
-        <option value="<%=event.id%>"><%=event.date%> (<%=event.venue%>,<%=event.city%>)</option>
-    
-      <% }) %>
 
-    </select>
-     <%} else {%>
-    <option>You have no events scheduled</option>
-    <% } %>
-    <label class="sr-only" for="task">Task:</label>
-    <input type="text" name="task" class="form-control" id="task" placeholder="Itinerary Task">
-    <div class="center">
-    <select class="selectpicker inline center" name="startTime">
+<section class="row" style="margin-top: 25px; margin-bottom: 15px;">
+  <div class="col-xs-12"> 
+    <form method="POST" id="add-itin-form" action='/new-itin/submit' role="form">
+     <!--  <div class="form-group"> -->
+        <select class="form-control" name="currentEventId">
+          <% if (events){ %>
+          <% events.forEach(function(event){ %>
+    
+          <option value="<%=event.id%>"><%=event.date%> (<%=event.venue%>,<%=event.city%>)</option>
+    
+          <% }) %>
+
+        </select>
+        <%} else {%>
+            <option>You have no events scheduled</option>
+        <% } %>
+  </div>
+</section>
+    <div class="row" style="margin-bottom: 15px">
+      <div class="col-xs-12">
+        <label class="sr-only" for="task">Task:</label>
+        <input type="text" name="task" class="form-control" id="task" placeholder="Itinerary Task">
+      </div>
+    </div>
+    <div class="row" style="margin-bottom: 20px;">
+    <div class="col-xs-6 form-group">
+    <label class="center-text" for="startTime">Start Time:</label>
+    <select class="form-control inline center" name="startTime">
       <option value="0">12:00 AM</option>
       <option value=".25">12:15 AM</option>
       <option value=".5">12:30 AM</option>
@@ -148,8 +159,10 @@
       <option value="30.75">6:45 AM</option>
       <option value="31">7:00 AM</option>
     </select>
-    <h4 class="selectpicker inline center"> until </h4>
-    <select class="inline" name="endTime">
+    </div>
+      <div class="col-xs-6 form-group">
+      <label class="center-text" for="endTime">End Time:</label>
+    <select class="form-control center inline" name="endTime">
       <option value="0">12:00 AM</option>
       <option value=".25">12:15 AM</option>
       <option value=".5">12:30 AM</option>
@@ -277,11 +290,15 @@
       <option value="30.75">6:45 AM</option>
       <option value="31">7:00 AM</option>
     </select>
-
    </div>
+    </div>
 </div>
   </div>
-  <button type="submit" id="add-venue-btn" class="btn btn-default">Submit</button>
+  <div class="row">
+  <div class="col-xs-12 center-button">  
+   <button type="submit" id="add-venue-btn" class="btn btn-default btn-lg">Submit</button>
+  </div>
+  
 </form>
 </div>
   <div style="margin-top: 40px" class="row">

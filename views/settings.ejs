@@ -1,3 +1,5 @@
+<div class="settings">
+
 <div class="row">
   <div class="col-xs-12 center-text">  
     <h4>Current User: <%=currentUser.firstName%> <%=currentUser.lastName%></h4>
@@ -10,16 +12,26 @@
 </div>
 <div class="row">
   <div class="col-xs-12 center-button">  
-    <a href="/new-event"><button name="logout" class="btn btn-default">Create Event</button></a> 
+    <a href="/new-event"><button class="btn btn-default ">Create Event</button></a> 
   </div>
 </div>  
 <div class="row">
-  <div class="col-xs-12 center-button"> 
-    <a href="/new-itin"><button name="logout" class="btn btn-default">Create Itinerary Items</button></a> 
+  <div class="col-xs-6 center-button"> 
+    <a href="/new-itin"><button class="btn btn-default ">Create Itinerary Items</button></a> 
+  </div>
+  <div>
+    <a href="/edit-itin"><button class="btn btn-default ">Delete Itinerary Items</button></a> 
   </div>
 </div>
+
+
+
+
+
 <div class="row">
   <div class="col-xs-12 center-button"> 
-    <a href="/logout"><button name="logout" class="btn btn-default">Logout</button></a>
+    <a href="/logout"><button class="btn btn-default btn-lg">Logout</button></a>
   </div> 
+</div>
+
 </div>

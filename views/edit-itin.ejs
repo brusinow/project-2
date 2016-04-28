@@ -1,77 +1,58 @@
-<div>
-  <h2 class="text-center">Edit/Delete an Itinerary Item</h2>
+<div class="row" style="margin-top: 25px">
+  <div class="col-xs-12">
+    <h3 class="center-text">Delete an Itinerary Item</h3>
+  </div>
 </div>
-<div class="row" style="margin-top: 50px">
- 
-  <form method="POST" id="add-itin-form" action='/new-itin/submit' role="form">
-  <div class="form-group">
-    <select id="itin-select" class="center selectpicker" name="currentEventId">
-    <% if (events){ %>
-
-       <% events.forEach(function(event){ %>
-    
-        <option value="<%=event.id%>"><%=event.date%> (<%=event.venue%>,<%=event.city%>)</option>
-    
-    <% }) %>
-    </select>
-    <div class="row">
-    <div class="col-xs-12">
-    <table class="table table-striped" style="margin-top: 40px">
-    <tbody>
-    <% if(events){ %>
-    <% events[0].itinItems.forEach(function(item){ %>
-    
-      <tr attr="<%=item.id%>">
-        <td><a href='/edit-itin/delete/<%=item.id%>'>Delete</a> | <a href='/edit-itin/edit/<%=item.id%>'>Edit</a></td>
-        <td ><%= item.task %></td>
+<div class="row" style="margin-top: 35px">
+  <div class="col-xs-12">
+    <select id="itin-select" class="form-control selectpicker" name="currentEventId">
+        <% var nowFormat = moment(); %>
+      <% events.forEach(function(event){ %>  
         
-        <td style="text-align: right"><%=util.timeFormat(item.startTime) + ' - '%><%=util.timeFormat(item.endTime)%></td>
-      </tr>
-      <% }) %>
-  
-    
-
- 
-    </tbody>
-  </table>
+       <% var month = event.date.slice(0,2);
+        var day = event.date.slice(3,5);
+        var year = event.date.slice(6,10);
+        var forecastTime = year + '-' + month + '-' + day;
+        var thisEventDate = moment(forecastTime).format('MMMM Do, YYYY');
+        var dateForDow = moment(forecastTime);
+        var thisDayOfWeek = dateForDow.format('dddd');
+        var difference = dateForDow.diff(nowFormat);
+%>
+  <% if(difference > -172800000){ %>  
+        <option value="<%=event.id%>"><%=event.date%> (<%=event.venue%>, <%=event.city%>)</option>
+        <%}%>
+      <%})%>
+    </select>
+  </div>
 </div>
-</div>
-
-
-  <% } else {%>
-    <table class="table table-striped">
-    <tbody>
-    <tr>
-      <td>
-        <h2 class="center-text">No items scheduled today</h2>
-      </td>
-    </tr>
-    </tbody>
+<div class="row">
+  <div class="col-xs-12">
+    <table class="table table-striped itin-delete-table" style="margin-top: 40px">
+      <tbody>
+        <% events[0].itinItems.forEach(function(item){ %>
+        <tr>
+          <td><a attr="<%=item.id%>" href="#" class='delete-link'>Delete</a></td>
+          <td ><%= item.task %></td>
+          <td style='text-align: right;'><%=util.timeFormat(item.startTime) + ' - '%><%=util.timeFormat(item.endTime)%></td>
+        </tr>
+        <% }) %>
+      </tbody>
     </table>
+  </div>
+</div>
 
-<% } %>
+
 
 
       
 
     
-     <%} else {%>
-    <option>You have no events scheduled</option>
-    <% } %>
+
     
    
    
-  </div>
-</div>
-<button type="submit" id="add-venue-btn" class="btn btn-default">Submit</button>
-</form>
+  
 
 
-</div>
-  <div style="margin-top: 40px" class="row">
-    <div class="col-xs-12">
-      <div id="venue-list">
-    </div>
-  </div> 
-</div>
-</div>
+
+

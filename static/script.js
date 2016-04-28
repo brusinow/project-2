@@ -1,16 +1,24 @@
 $('#itin-select').change(function() {
   $("table tbody").html("");
+  var currentEventId = parseInt($('#itin-select').val());
+
   $.ajax({
     url: '/edit-itinChange',
-    method: 'GET',
+    method: 'POST',
+    data: {
+      currentEventId: currentEventId
+    },
     success: function(xhr, status, data){
 
       console.log(status);
       if(status === 'success'){
-    
-        console.log(data);
-        // console.log(data.responseJSON.results.length);
-       
+     
+      var dataParsed = JSON.parse(data.responseText);
+     
+  dataParsed.events.itinItems.forEach(function(item){
+  var newRow = $("<tr><td><a attr='"+item.id+"' href='#' class='delete-link'>Delete</a></td><td>"+item.task+"</td><td style='text-align: right; font-size:12px;'>"+timeFormat(item.startTime)+" - "+timeFormat(item.endTime)+"</td></tr>");
+  $("table tbody").append(newRow);        
+      }); 
         
       }
     }
@@ -18,6 +26,22 @@ $('#itin-select').change(function() {
 });
 
 
+
+$(document).on( 'click', '.delete-link', function(e){
+    e.preventDefault();
+    var myID = $(this).attr('attr');
+    console.log('click working and id ',myID);
+    $.ajax({
+        method:'DELETE',
+        url:'/edit-itin/delete',
+        data: {
+          id:myID
+        }
+    }).success(function(){
+       location.reload();
+        //redirect or update view
+    });
+});
 
 
 // $('#itin-select').change(function() {
@@ -36,20 +60,52 @@ $('#itin-select').change(function() {
     
 // });
 
-function formatAMPM(date) {
-  var hours = date.getHours();
-  var minutes = date.getMinutes();
-  var ampm = hours >= 12 ? 'pm' : 'am';
-  hours = hours % 12;
-  hours = hours ? hours : 12; // the hour '0' should be '12'
-  minutes = minutes < 10 ? '0'+minutes : minutes;
-  var strTime = hours + ':' + minutes + ' ' + ampm;
-  return strTime;
-}
+function timeFormat(hours){
+    var letters = 'AM'
+    var minutes = '00'
+ if (hours === 0 || hours === '0') {
+    hours = 12;
+    letters = 'AM';
+  }  
+  else if (hours !== 0 && hours < 12){
+    letters = 'AM';
+  }
+  else if (hours >= 12 && hours < 24){
+    hours = hours - 12;
+    letters = 'PM';
+  }
+  else if (hours >= 24 && hours < 36){
+    hours = hours -24;
+    letters = 'AM';
+  }
+  else {
+    letters = 'error'
+  }
+    if (hours - Math.floor(hours) === 0){
+      minutes = '00'; 
+    }
+    else if (hours - Math.floor(hours) === .25){
+      hours = hours - .25;
+      minutes = '15'; 
+    }
+    else if (hours - Math.floor(hours) === .5){
+      hours = hours - .5;
+      minutes = '30'; 
+    }
+    else if (hours - Math.floor(hours) === .75){
+      hours = hours - .75;
+      minutes = '45'; 
+    }
+    else {
+      minutes = 'error'
+    }
+  var completeTime = hours +":"+ minutes +" "+ letters;
+  return completeTime;
+  };
 
 function toFahrenheit(kelvin){
   return Math.round(kelvin * (9/5) - 459.67);
-}
+};
 
 $(function () {
     $("#datepicker").datepicker({
