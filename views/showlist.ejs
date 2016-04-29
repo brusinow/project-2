@@ -2,7 +2,7 @@
      <% if (events){ %>
       <table class="table table-striped">
       <tbody>
-      <% var nowFormat = moment(); %>
+      <% var nowFormat = moment().tz(moment.tz.guess()); %>
       <% events.forEach(function(event){ %>
       <%
         var month = event.date.slice(0,2);
