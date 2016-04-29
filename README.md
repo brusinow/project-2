@@ -1,6 +1,6 @@
 # Project #2: The Full Stack App
 
-View it here: https://roadwarrior.herokuapp.com/
+View it here: https://roadwarrior.herokuapp.com
 Wireframe PDF: https://roadwarrior.herokuapp.com/RoadWarrior.pdf 
 
 "Road Warrior" Music Tour Management Tool by Brent Rusinow
