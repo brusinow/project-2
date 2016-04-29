@@ -119,6 +119,7 @@ app.get('/today', function(req, res) {
           
       request(api + lat + lng + '&appid=' + key, function(err, response, body) {
       var weatherData = JSON.parse(body);
+      console.log(weatherData);
       res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek, moment: moment, alerts: req.flash()});
       });
       } else {
