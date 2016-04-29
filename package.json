@@ -20,6 +20,7 @@
     "flash": "^1.1.0",
     "geocoder": "^0.2.2",
     "moment": "^2.13.0",
+    "moment-timezone": "^0.5.3",
     "oauth": "^0.9.14",
     "passport": "^0.3.2",
     "passport-oauth": "^1.0.0",
