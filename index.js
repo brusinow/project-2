@@ -93,7 +93,6 @@ app.post('/', function(req, res) {
 app.get('/today', function(req, res) {
   if(req.currentUser && req.currentUser.groupId) {
     var userTimeZone = moment.tz.guess();
-    console.log(userTimeZone);
     var now = moment().tz(userTimeZone).format('MM/DD/YYYY');
     var nowText = moment().tz(userTimeZone).format('MMMM Do, YYYY');
 // 
@@ -106,7 +105,7 @@ app.get('/today', function(req, res) {
     //          + MyDate.getFullYear();
     // var nowText = moment().format('MMMM Do, YYYY');
 
-    var dateForDow = moment().tz(moment.tz.guess());
+    var dateForDow = moment().tz(userTimeZone);
     var thisDayOfWeek = dateForDow.format('dddd');
 
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
