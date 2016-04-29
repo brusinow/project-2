@@ -146,6 +146,7 @@ body {
 
 #myCarousel li {
   color: black;
+  background-color: #666666;
 }
 
 .gray-background {
