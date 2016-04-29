@@ -1,5 +1,5 @@
     <h3 class="center-text">Upcoming Schedule</h3>
-     <% if (events){ %>
+     <% if (events.length>0){ %>
       <table class="table table-striped">
       <tbody>
       <% var nowFormat = moment().tz(moment.tz.guess()); %>
@@ -25,5 +25,7 @@
       </table>
       
     <% } else{%>
-    <h2>You have no events. :-(</h2>
+    <div class="center-text" style="margin-top: 25px;">
+    <h4>You have no events. :-(</h4>
+    </div>
     <% } %>
