@@ -92,8 +92,10 @@ app.post('/', function(req, res) {
 
 app.get('/today', function(req, res) {
   if(req.currentUser && req.currentUser.groupId) {
-    var now = moment().tz(moment.tz.guess()).format('MM/DD/YYYY');
-    var nowText = moment().tz(moment.tz.guess());
+    var userTimeZone = moment.tz.guess();
+    console.log(userTimeZone);
+    var now = moment().tz(userTimeZone).format('MM/DD/YYYY');
+    var nowText = moment().tz(userTimeZone);
 // .format('MMMM Do, YYYY')
     // var MyDate = new Date();
     // var now;
