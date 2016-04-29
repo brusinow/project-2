@@ -15,7 +15,7 @@
 <% if(currentUser){ %>
  <div class="col-xs-12 navbar-inverse navbar-fixed-top">
   <div class="row" id="topNav">
-    <div style="color:#efefef; font-size: 12px; text-align: right;">Welcome, <%= currentUser.firstName%>!</div>
+    <div style="color:#efefef; font-size: 12px; text-align: right;"><i class="fa fa-user" aria-hidden="true"></i> <%= currentUser.firstName%> <%= currentUser.lastName%></div>
   </div>
 </div>
 <% } %>
