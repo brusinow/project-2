@@ -138,7 +138,16 @@ body {
 
 .date {
   
-} 
+}
+
+#myCarousel {
+  height: 500px;
+}
+
+#myCarousel li {
+  color: black;
+}
+
 .gray-background {
   background-color:#444444;
   border-color: #222222;
