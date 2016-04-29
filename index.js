@@ -5,7 +5,8 @@ var bodyParser = require('body-parser');
 var request = require('request');
 var flash = require('connect-flash');
 var db = require("./models");
-var moment = require('moment');
+// var moment = require('moment');
+var moment = require('moment-timezone');
 var util = require('./util/util');
     
 var app = express();
@@ -156,7 +157,7 @@ app.get('/new-itin', function(req, res){
      if(req.currentUser) {
   db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC'}).then(function(events){
     console.log("events should be ",events);
-  res.render('new-itin', {events: events, alerts: req.flash()});
+  res.render('new-itin', {events: events, moment: moment, alerts: req.flash()});
   });
     } else {
       req.flash('danger', 'You must be logged in, buddy...');
