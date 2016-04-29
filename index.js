@@ -120,11 +120,11 @@ app.get('/today', function(req, res) {
           
       request(api + lat + lng + '&appid=' + key, function(err, response, body) {
       var weatherData = JSON.parse(body);
-      res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek, alerts: req.flash()});
+      res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek, moment: moment, alerts: req.flash()});
       });
       } else {
         var weatherData = {lon: 0, lat: 0};
-        res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek, alerts: req.flash()});
+        res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek, moment: moment, alerts: req.flash()});
         }
       });
   } else if (req.currentUser && !req.currentUser.groupId){
