@@ -95,8 +95,8 @@ app.get('/today', function(req, res) {
     var userTimeZone = moment.tz.guess();
     console.log(userTimeZone);
     var now = moment().tz(userTimeZone).format('MM/DD/YYYY');
-    var nowText = moment().tz(userTimeZone);
-// .format('MMMM Do, YYYY')
+    var nowText = moment().tz(userTimeZone).format('MMMM Do, YYYY');
+// 
     // var MyDate = new Date();
     // var now;
     // MyDate.setDate(MyDate.getDate());
