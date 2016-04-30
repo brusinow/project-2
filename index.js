@@ -7,7 +7,62 @@ var flash = require('connect-flash');
 var db = require("./models");
 var moment = require('moment');
 var util = require('./util/util');
-    
+var oauthSignature = require('oauth-signature');  
+var n = require('nonce')();   
+var qs = require('querystring');  
+var _ = require('lodash');
+
+var request_yelp = function(set_parameters, callback) {
+
+  /* The type of request */
+  var httpMethod = 'GET';
+
+  /* The url we are using for the request */
+  var url = 'http://api.yelp.com/v2/search';
+
+  /* We can setup default parameters here */
+  var default_parameters = {
+    radius_filter: 500
+  };
+
+  
+  /* We set the require parameters here */
+  var required_parameters = {
+    oauth_consumer_key : process.env.YELP_CONSUMER_KEY,
+    oauth_token : process.env.YELP_TOKEN,
+    oauth_nonce : n(),
+    oauth_timestamp : n().toString().substr(0,10),
+    oauth_signature_method : 'HMAC-SHA1',
+    oauth_version : '1.0'
+  };
+
+  /* We combine all the parameters in order of importance */ 
+  var parameters = _.assign(default_parameters, set_parameters, required_parameters);
+
+  /* We set our secrets here */
+  var consumerSecret = process.env.YELP_CONSUMER_SECRET;
+  var tokenSecret = process.env.YELP_TOKEN_SECRET;
+
+  /* Then we call Yelp's Oauth 1.0a server, and it returns a signature */
+  /* Note: This signature is only good for 300 seconds after the oauth_timestamp */
+  var signature = oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret, { encodeSignature: false});
+
+  /* We add the signature to the list of paramters */
+  parameters.oauth_signature = signature;
+
+  /* Then we turn the paramters object, to a query string */
+  var paramURL = qs.stringify(parameters);
+
+  /* Add the query string to the url */
+  var apiURL = url+'?'+paramURL;
+  /* Then we use request to send make the API Request */
+  request(apiURL, function(error, response, body){
+    return callback(error, response, body);
+  });
+
+};
+
+
 var app = express();
 
 app.set('view engine', 'ejs');
@@ -27,6 +82,8 @@ app.use(function(req, res, next){
   res.locals.util = util;
   next()
 });
+
+
 
 app.use(flash());
 
@@ -106,16 +163,31 @@ app.get('/today', function(req, res) {
 
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
     db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
-      if(event && event.lng && event.lat){
+      if(event && event.lng && event.lat && event.address){
+        // **********open weather api*******
       var api = 'http://api.openweathermap.org/data/2.5/weather?'; 
       var lat = 'lat=' + event.lat;
       var lng = '&lon=' + event.lng;
-      
-      var key = process.env.WEATHER_KEY;
-          
+      var key = process.env.WEATHER_KEY; 
       request(api + lat + lng + '&appid=' + key, function(err, response, body) {
-      var weatherData = JSON.parse(body);
-      res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek, alerts: req.flash()});
+        var weatherData = JSON.parse(body);
+        var latYelp = event.lat;
+        var lngYelp = event.lng;
+        var addressYelp = event.address;
+        
+        request_yelp({term: "restaurants", limit: 5, sort: '2', location: addressYelp, cll: latYelp+','+lngYelp}, function(error, response, body){
+          var restaurantData = JSON.parse(body);
+          console.log(restaurantData.businesses[0]);
+
+          request_yelp({term: "coffee", limit: 2, sort: '2', location: addressYelp, cll: latYelp+','+lngYelp}, function(error, response, body){
+          var coffeeData = JSON.parse(body); 
+
+            request_yelp({term: "pharmacy", limit: 1, sort: '1', location: addressYelp, cll: latYelp+','+lngYelp}, function(error, response, body){
+              var pharmacyData = JSON.parse(body); 
+          res.render('showday', {date: nowText, event: event, weatherData: weatherData, yelpFoodData: restaurantData, yelpCoffeeData: coffeeData, yelpPharmacyData: pharmacyData, dayName: thisDayOfWeek, alerts: req.flash()});
+            });
+          });
+        });
       });
       } else {
         var weatherData = {lon: 0, lat: 0};
@@ -213,6 +285,7 @@ app.delete('/edit-event/delete', function(req, res) {
   console.log('entering delete route');
   db.event.find({where: {id: id}}).then(function(id){
     id.destroy().then(function(u){
+      req.flash('info', 'Your event was successfully deleted.');
       res.send('success');
     });
   });
@@ -254,6 +327,7 @@ app.put('/edit-event/show', function(req, res){
       event.info = venueInfo;
     }
     event.save().then(function() {
+      req.flash('info', 'Your event was successfully edited.');
       res.send('success');
     });
   });
@@ -307,7 +381,7 @@ app.post('/new-event/submit', function(req, res){
   var venueInfo = req.body.info;
   var currentGroup = req.currentUser.groupId;
   db.event.create({date: venueDate, venue: venueName, address: venueAddress, city: venueCity, info: venueInfo, groupId: currentGroup}).then(function(data){
-    req.flash('info', 'Your event was created!');
+    req.flash('info', 'Your event was created.');
     res.redirect('/settings')
   });
 });
@@ -320,7 +394,7 @@ app.post('/new-itin/submit', function(req, res){
   console.log(req.body);
   console.log("Current event should be "+currentEvent)
   db.itinItem.create({startTime: startTimeItin, endTime: endTimeItin, task: taskItin, eventId: currentEvent}).then(function(data){
-    req.flash('info', 'Your itinerary item was created!');
+    req.flash('info', 'Your itinerary item was created.');
     res.redirect('/settings')
   });
 });

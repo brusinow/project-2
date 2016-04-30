@@ -1,4 +1,11 @@
-
+$(document).ready(function() {  
+       $("#myCarousel").swiperight(function() {  
+          $(this).carousel('prev');  
+          });  
+       $("#myCarousel").swipeleft(function() {  
+          $(this).carousel('next');  
+     });  
+  });  
 
 
 setTimeout(function () {   window.scrollTo(0, 1); }, 500);
@@ -60,7 +67,7 @@ $(document).on( 'click', '.delete-link-event', function(e){
           id:myID
         }
     }).success(function(){
-       location.reload();
+       window.location.assign("/settings");
         //redirect or update view
     });
 });
