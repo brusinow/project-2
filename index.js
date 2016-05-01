@@ -163,36 +163,8 @@ app.get('/today', function(req, res) {
 
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
     db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
-      if(event && event.lng && event.lat && event.address){
-        // **********open weather api*******
-      var api = 'http://api.openweathermap.org/data/2.5/weather?'; 
-      var lat = 'lat=' + event.lat;
-      var lng = '&lon=' + event.lng;
-      var key = process.env.WEATHER_KEY; 
-      request(api + lat + lng + '&appid=' + key, function(err, response, body) {
-        var weatherData = JSON.parse(body);
-        var latYelp = event.lat;
-        var lngYelp = event.lng;
-        var addressYelp = event.address;
-        
-        request_yelp({term: "restaurants", limit: 5, sort: '2', location: addressYelp, cll: latYelp+','+lngYelp}, function(error, response, body){
-          var restaurantData = JSON.parse(body);
-          console.log(restaurantData.businesses[0]);
-
-          request_yelp({term: "coffee", limit: 2, sort: '2', location: addressYelp, cll: latYelp+','+lngYelp}, function(error, response, body){
-          var coffeeData = JSON.parse(body); 
-
-            request_yelp({term: "pharmacy", limit: 1, sort: '1', location: addressYelp, cll: latYelp+','+lngYelp}, function(error, response, body){
-              var pharmacyData = JSON.parse(body); 
-          res.render('showday', {date: nowText, event: event, weatherData: weatherData, yelpFoodData: restaurantData, yelpCoffeeData: coffeeData, yelpPharmacyData: pharmacyData, dayName: thisDayOfWeek, alerts: req.flash()});
-            });
-          });
-        });
-      });
-      } else {
-        var weatherData = {lon: 0, lat: 0};
-        res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek, alerts: req.flash()});
-        }
+      
+      res.render('showday', {date: nowText, event: event, dayName: thisDayOfWeek, alerts: req.flash()});
       });
   } else if (req.currentUser && !req.currentUser.groupId){
     
@@ -442,6 +414,15 @@ db.event.findOne({where: {id: req.params.id, groupId: req.currentUser.groupId},i
 });
 
 
+
+
+
+
+
+
+
+
+
 app.get('/logout', function(req, res){
   req.session.userId = false;
   res.redirect('/');
@@ -449,6 +430,9 @@ app.get('/logout', function(req, res){
 
 
 app.use('/auth', require('./controllers/auth'));
+app.use('/weather', require('./controllers/weather'));
+app.use('/yelp', require('./controllers/yelp'));
+
 
 app.listen(process.env.PORT || 3000)
 

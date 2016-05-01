@@ -1,3 +1,4 @@
+<body id="today-page">
 <div id="myCarousel" class="carousel slide" wrap="false" data-interval="false">
   <!-- Indicators -->
   <ol class="carousel-indicators">
@@ -8,6 +9,7 @@
   <!-- Wrapper for slides -->
   <div class="carousel-inner" role="listbox">
     <div class="item active" style="padding-bottom: 150px;">
+    <div class="hidden" id="coordinates" lat="<%=event.lat%>" lng="<%=event.lng%>"></div>
       <div class="row">
         <div class="col-xs-12 center-text day-name"><h4><%= dayName %></h4></div>
       </div>
@@ -23,12 +25,12 @@
       </div>
       <% } %>
       <% if(event && event.lat && event.lng){ %>
-      <% if (weatherData.lon !=0 ){%>
+  
       <div class="row">
-        <div class="col-xs-3 col-xs-offset-3 center-text" id="weather"><img src="http://openweathermap.org/img/w/<%=weatherData.weather[0].icon%>.png"></div>
-        <div class="col-xs-3 center-text" id="weatherText"><%=util.toFahrenheit(weatherData.main.temp)%>°F</div>
+        <div class="col-xs-3 col-xs-offset-3 center-text" id="weather"><img id="weather-img" src=""></div>
+        <div class="col-xs-3 center-text" id="weatherText"></div>
       </div>
-  <% } %>  
+
   <% } %>
       <div class="row">
         <div class="col-xs-12">
@@ -56,7 +58,7 @@
       <div class="row">
         <div class="col-xs-12 center-text" style="margin-top: 15px;">
           <h3 class="my-heading" style="margin-bottom: 5px;">Venue Info</h3>
-            <p><span>Address: </span><%=event.address%></p><br>
+            <p><span>Address: </span><span id="address"><%=event.address%></span></p><br>
             <h4 class="small-underlined-header" style="margin-bottom: 5px;">Additional Info</h4>
               <p style="text-align: left;"><%= event.info %></p>
         </div>
@@ -74,32 +76,9 @@
     </div>
       <div class="row">
         <div class="col-xs-12">
-          <table class="table table-condensed table-striped recommendation-table" style="margin-top: 20px">
+          <table class="table table-condensed table-striped restaurant-table recommendation-table" style="margin-top: 20px">
             <tbody>
-            <%if(yelpFoodData){%>
-            <% yelpFoodData.businesses.forEach(function(restaurant){ %>
-              <tr>
-                  
-                  <td>
-                  <a class="invisible-link" href=<%=restaurant.mobile_url%>>
-                      <span class="restaurant-name"><%=restaurant.name%></span>
-                    <br>
-                      <div class="restaurant-review"><img src=<%=restaurant.rating_img_url_small%>></div> 
-                      <div class="restaurant-review-count"><%=restaurant.review_count%> Reviews</div>
-                    <br>
-                      <span class="restaurant-address"><%=restaurant.location.display_address[0]%>, <%=restaurant.location.city%></span>
-                    </a>
-                  </td>
-                
-              </tr>
-            <% }) %>
-     <%} else{%>
-              <tr>
-                <td>
-                  <h2 class="center-text">Add an address to this event to see nearby recommendations.</h2>
-                </td>
-              </tr>
-      <%}%>
+           
         </tbody>
           </table>
         </div>
@@ -117,7 +96,7 @@
 <!-- Gradient Div -->
 <div class="gradient-footer"></div>
 
-
+</body>
 
 
 

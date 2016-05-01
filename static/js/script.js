@@ -1,3 +1,77 @@
+
+
+if($('body').is('#today-page')){
+  $(document).ready(function() {  
+    console.log("Only on today page");
+    var lat = $("#coordinates").attr('lat');
+    var lng = $("#coordinates").attr('lng');
+    if (lat && lng){
+    $.ajax({
+    url: '/weather',
+    method: 'GET',
+    data: {
+    lat: lat,
+    lng: lng
+  },
+
+}).done(function(data) {
+ 
+$("#weather-img").attr( "src", '/img/weather/'+data.weatherData.weather[0].icon+'.png' );
+console.log($("weather").attr('src'));
+$( "#weatherText" ).text(toFahrenheit(data.weatherData.main.temp)+' °F');
+});
+} 
+})
+}
+
+
+// YELP ------------------------//
+
+if($('body').is('#today-page')){
+  $(document).ready(function() {  
+    var lat = $("#coordinates").attr('lat');
+    var lng = $("#coordinates").attr('lng');
+    var address = $('#address').text();
+    if (lat && lng){
+      console.log('Entering AJAX Call');
+    $.ajax({
+    url: '/yelp',
+    method: 'GET',
+    data: {
+    lat: lat,
+    lng: lng,
+    address: address
+  },
+
+}).done(function(yelpResults) {
+  console.log(yelpResults);
+  if(yelpResults.yelpFoodData){
+    yelpResults.yelpFoodData.businesses.forEach(function(restaurant){
+    var restaurantName = "<tr><td><a class='invisible-link' href="+restaurant.mobile_url+"><span class='restaurant-name'>"+restaurant.name+"</span><br>";
+    var restaurantReviewStars = "<div class='restaurant-review'><img src="+restaurant.rating_img_url_small+"></div>";
+    var restaurantReviewCount = "<div class='restaurant-review-count'>"+restaurant.review_count+" Reviews</div><br>";
+    var restaurantAddress = "<span class='restaurant-address'>"+restaurant.location.display_address[0]+", "+restaurant.location.city+"</span></a></td></tr>";
+    
+  var newRow = $(restaurantName + restaurantReviewStars + restaurantReviewCount + restaurantAddress);
+  $(".restaurant-table").append(newRow);        
+      }); 
+  }
+});
+} 
+})
+} 
+      
+ 
+           
+     
+
+
+
+
+
+     
+
+
 $(document).ready(function() {  
        $("#myCarousel").swiperight(function() {  
           $(this).carousel('prev');  
