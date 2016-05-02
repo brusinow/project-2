@@ -231,21 +231,28 @@ body {
 
 .transparent-btn {
   background-color: rgba(0, 0, 0, 0);
-  border: 2px solid white;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 12px;
   color: white;
 }
 
 .transparent-btn:hover {
   background-color: rgba(206, 209, 211, 0.39);
-  border: 2px solid white;
+  border: 1px solid white;
   color: white;
 }
 
-.transparent-btn:active .transparent-btn:focus {
-  background-color: rgba(206, 209, 211, 0.39);
-  border: 2px solid white;
+
+.transparent-btn:active {
+  background-color: rgba(0, 0, 0, .5);
+  border: 1px solid white;
   color: white;
 }
+
+
+
+
 
 .recommendation-table td {
   line-height: 1 !important;

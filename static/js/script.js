@@ -231,7 +231,7 @@ $(document).on( 'click', '#food-button', function(e){
   console.log("food button");
 document.getElementById("food-row").className = "row";
 document.getElementById("coffee-row").className = "row";
-document.getElementById("gym-row").className = "row";
+document.getElementById("gym-row").className = "row hidden";
 document.getElementById("book-row").className = "row hidden";
 document.getElementById("movie-row").className = "row hidden";
 document.getElementById("pharmacy-row").className = "row hidden";
@@ -243,7 +243,7 @@ $(document).on( 'click', '#activities-button', function(e){
   console.log("activity button");
 document.getElementById("food-row").className = "row hidden";
 document.getElementById("coffee-row").className = "row hidden";
-document.getElementById("gym-row").className = "row hidden";
+document.getElementById("gym-row").className = "row";
 document.getElementById("book-row").className = "row";
 document.getElementById("movie-row").className = "row";
 document.getElementById("pharmacy-row").className = "row hidden";
