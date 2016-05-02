@@ -1,8 +1,9 @@
     <h3 class="center-text">Edit/Delete Events</h3>
-     <% if (events){ %>
+    
       <table class="table table-striped">
       <tbody>
-      <% var nowFormat = moment(); %>
+       <% if (events.length >0){ %>
+      <% var nowFormat = moment().tz(moment.tz.guess()); %>
       <% events.forEach(function(event){ %>
       <%
         var month = event.date.slice(0,2);
@@ -25,12 +26,15 @@
       </tr>
       <% } %>
            <% }) %>
+           <%} else {%>
+            <tr>
+              <td>You have no events scheduled</td>
+            </tr>
+        <% } %>
       </tbody>
       </table>
       
-    <% } else{%>
-    <h2>You have no events. :-(</h2>
-    <% } %>
+  
 
 
 
