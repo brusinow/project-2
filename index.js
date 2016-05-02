@@ -5,10 +5,64 @@ var bodyParser = require('body-parser');
 var request = require('request');
 var flash = require('connect-flash');
 var db = require("./models");
-// var moment = require('moment');
-var moment = require('moment-timezone');
+var moment = require('moment');
 var util = require('./util/util');
-    
+var oauthSignature = require('oauth-signature');  
+var n = require('nonce')();   
+var qs = require('querystring');  
+var _ = require('lodash');
+
+var request_yelp = function(set_parameters, callback) {
+
+  /* The type of request */
+  var httpMethod = 'GET';
+
+  /* The url we are using for the request */
+  var url = 'http://api.yelp.com/v2/search';
+
+  /* We can setup default parameters here */
+  var default_parameters = {
+    radius_filter: 500
+  };
+
+  
+  /* We set the require parameters here */
+  var required_parameters = {
+    oauth_consumer_key : process.env.YELP_CONSUMER_KEY,
+    oauth_token : process.env.YELP_TOKEN,
+    oauth_nonce : n(),
+    oauth_timestamp : n().toString().substr(0,10),
+    oauth_signature_method : 'HMAC-SHA1',
+    oauth_version : '1.0'
+  };
+
+  /* We combine all the parameters in order of importance */ 
+  var parameters = _.assign(default_parameters, set_parameters, required_parameters);
+
+  /* We set our secrets here */
+  var consumerSecret = process.env.YELP_CONSUMER_SECRET;
+  var tokenSecret = process.env.YELP_TOKEN_SECRET;
+
+  /* Then we call Yelp's Oauth 1.0a server, and it returns a signature */
+  /* Note: This signature is only good for 300 seconds after the oauth_timestamp */
+  var signature = oauthSignature.generate(httpMethod, url, parameters, consumerSecret, tokenSecret, { encodeSignature: false});
+
+  /* We add the signature to the list of paramters */
+  parameters.oauth_signature = signature;
+
+  /* Then we turn the paramters object, to a query string */
+  var paramURL = qs.stringify(parameters);
+
+  /* Add the query string to the url */
+  var apiURL = url+'?'+paramURL;
+  /* Then we use request to send make the API Request */
+  request(apiURL, function(error, response, body){
+    return callback(error, response, body);
+  });
+
+};
+
+
 var app = express();
 
 app.set('view engine', 'ejs');
@@ -28,6 +82,8 @@ app.use(function(req, res, next){
   res.locals.util = util;
   next()
 });
+
+
 
 app.use(flash());
 
@@ -93,40 +149,22 @@ app.post('/', function(req, res) {
 
 app.get('/today', function(req, res) {
   if(req.currentUser && req.currentUser.groupId) {
-    var userTimeZone = moment.tz.guess();
-    var now = moment().tz(userTimeZone).format('MM/DD/YYYY');
-    var nowText = moment().tz(userTimeZone).format('MMMM Do, YYYY');
-// 
-    // var MyDate = new Date();
-    // var now;
-    // MyDate.setDate(MyDate.getDate());
+    var MyDate = new Date();
+    var now;
+    MyDate.setDate(MyDate.getDate());
 
-    // now = ('0' + (MyDate.getMonth()+1)).slice(-2) + '/'
-    //          + ('0' + MyDate.getDate()).slice(-2) + '/'
-    //          + MyDate.getFullYear();
-    // var nowText = moment().format('MMMM Do, YYYY');
+    now = ('0' + (MyDate.getMonth()+1)).slice(-2) + '/'
+             + ('0' + MyDate.getDate()).slice(-2) + '/'
+             + MyDate.getFullYear();
+    var nowText = moment().format('MMMM Do, YYYY');
 
-    var dateForDow = moment().tz(userTimeZone);
+    var dateForDow = moment();
     var thisDayOfWeek = dateForDow.format('dddd');
 
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
     db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
-      if(event && event.lng && event.lat){
-      var api = 'http://api.openweathermap.org/data/2.5/weather?'; 
-      var lat = 'lat=' + event.lat;
-      var lng = '&lon=' + event.lng;
       
-      var key = process.env.WEATHER_KEY;
-          
-      request(api + lat + lng + '&appid=' + key, function(err, response, body) {
-      var weatherData = JSON.parse(body);
-      console.log(weatherData);
-      res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek, moment: moment, alerts: req.flash()});
-      });
-      } else {
-        var weatherData = {lon: 0, lat: 0};
-        res.render('showday', {date: nowText, event: event, weatherData: weatherData, dayName: thisDayOfWeek, moment: moment, alerts: req.flash()});
-        }
+      res.render('showday', {date: nowText, event: event, dayName: thisDayOfWeek, alerts: req.flash()});
       });
   } else if (req.currentUser && !req.currentUser.groupId){
     
@@ -157,7 +195,7 @@ app.get('/new-itin', function(req, res){
      if(req.currentUser) {
   db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC'}).then(function(events){
     console.log("events should be ",events);
-  res.render('new-itin', {events: events, moment: moment, alerts: req.flash()});
+  res.render('new-itin', {events: events, alerts: req.flash()});
   });
     } else {
       req.flash('danger', 'You must be logged in, buddy...');
@@ -219,6 +257,7 @@ app.delete('/edit-event/delete', function(req, res) {
   console.log('entering delete route');
   db.event.find({where: {id: id}}).then(function(id){
     id.destroy().then(function(u){
+      req.flash('info', 'Your event was successfully deleted.');
       res.send('success');
     });
   });
@@ -260,6 +299,7 @@ app.put('/edit-event/show', function(req, res){
       event.info = venueInfo;
     }
     event.save().then(function() {
+      req.flash('info', 'Your event was successfully edited.');
       res.send('success');
     });
   });
@@ -313,7 +353,7 @@ app.post('/new-event/submit', function(req, res){
   var venueInfo = req.body.info;
   var currentGroup = req.currentUser.groupId;
   db.event.create({date: venueDate, venue: venueName, address: venueAddress, city: venueCity, info: venueInfo, groupId: currentGroup}).then(function(data){
-    req.flash('info', 'Your event was created!');
+    req.flash('info', 'Your event was created.');
     res.redirect('/settings')
   });
 });
@@ -326,7 +366,7 @@ app.post('/new-itin/submit', function(req, res){
   console.log(req.body);
   console.log("Current event should be "+currentEvent)
   db.itinItem.create({startTime: startTimeItin, endTime: endTimeItin, task: taskItin, eventId: currentEvent}).then(function(data){
-    req.flash('info', 'Your itinerary item was created!');
+    req.flash('info', 'Your itinerary item was created.');
     res.redirect('/settings')
   });
 });
@@ -374,6 +414,15 @@ db.event.findOne({where: {id: req.params.id, groupId: req.currentUser.groupId},i
 });
 
 
+
+
+
+
+
+
+
+
+
 app.get('/logout', function(req, res){
   req.session.userId = false;
   res.redirect('/');
@@ -381,8 +430,8 @@ app.get('/logout', function(req, res){
 
 
 app.use('/auth', require('./controllers/auth'));
+app.use('/weather', require('./controllers/weather'));
+app.use('/yelp', require('./controllers/yelp'));
+
 
 app.listen(process.env.PORT || 3000)
-
-
-

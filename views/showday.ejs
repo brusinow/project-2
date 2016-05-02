@@ -1,70 +1,181 @@
+<body id="today-page">
+<div id="myCarousel" class="carousel slide" wrap="false" data-interval="false">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="1"></li>
+  </ol>
 
-<div class="row">
-  <div class="col-xs-12 center-text day-name"><h4><%= dayName %></h4></div>
-</div>
-<div class="row">
- <div class="col-xs-12 center-text"><h3><%= date %></h3></div>
-</div>
-<% if(event){ %>
-<div class="row">
-  <div class="col-xs-12 center-text"><h4><%= event.venue %></h4></div>
-</div>
-<div class="row">
-  <div class="col-xs-12 center-text"><h5><%= event.city %></h5></div>
-</div>
-<% } %>
-<% if(event && event.lat && event.lng){ %>
-<% if (weatherData.lon !=0 ){%>
-<div class="row">
-  <div class="col-xs-3 col-xs-offset-3 center-text" id="weather"><img src="http://openweathermap.org/img/w/<%=weatherData.weather[0].icon%>.png"></div>
-  <div class="col-xs-3 center-text" id="weatherText"><%=util.toFahrenheit(weatherData.main.temp)%>°F</div>
-</div>
-<% } %>  
-<% } %>
-
-<div class="row">
-<div class="col-xs-12">
-<table class="table table-striped" style="margin-top: 40px">
-    <tbody>
-    <% if(event && event.itinItems && event.itinItems.length > 0){ %>
-    <% event.itinItems.forEach(function(item){ %>
-      <tr>
-        <td><%= item.task %></td>
-
-        <td style="text-align: right"><%=util.timeFormat(item.startTime) + ' - '%><%=util.timeFormat(item.endTime)%></td>
-      </tr>
-      <% }) %>
+  <!-- Wrapper for slides -->
+  <div class="carousel-inner" role="listbox">
+    <div class="item active" style="padding-bottom: 150px;">
+    <div class="hidden" id="coordinates" lat="<%=event.lat%>" lng="<%=event.lng%>"></div>
+      <div class="row">
+        <div class="col-xs-12 center-text day-name"><h4><%= dayName %></h4></div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 center-text"><h3><%= date %></h3></div>
+      </div>
+      <% if(event){ %>
+      <div class="row">
+        <div class="col-xs-12 center-text"><h4><%= event.venue %></h4></div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 center-text"><h5><%= event.city %></h5></div>
+      </div>
+      <% } %>
+      <% if(event && event.lat && event.lng){ %>
   
-    
+      <div class="row">
+        <div class="col-xs-3 col-xs-offset-3 center-text" id="weather"><img id="weather-img" src=""></div>
+        <div class="col-xs-3 center-text" id="weatherText"></div>
+      </div>
 
- 
-    </tbody>
-  </table>
+  <% } %>
+      <div class="row">
+        <div class="col-xs-12">
+          <table class="table table-striped" style="margin-top: 20px">
+            <tbody>
+            <% if(event && event.itinItems && event.itinItems.length > 0){ %>
+            <% event.itinItems.forEach(function(item){ %>
+              <tr>
+                <td><%= item.task %></td>
+                <td style="text-align: right"><%=util.timeFormat(item.startTime) + ' - '%><%=util.timeFormat(item.endTime)%></td>
+              </tr>
+              <% }) %>
+            <% } else {%>
+              <tr>
+                <td>
+                  <h5 class="center-text">No items scheduled today.</h5>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <% if(event){ %>
+      <div class="row">
+        <div class="col-xs-12 center-text" style="margin-top: 15px;">
+          <h3 class="my-heading" style="margin-bottom: 5px;">Venue Info</h3>
+            <p><span>Address: </span><span id="address"><%=event.address%></span></p><br>
+            <h4 class="small-underlined-header" style="margin-bottom: 5px;">Additional Info</h4>
+              <p style="text-align: left;"><%= event.info %></p>
+        </div>
+      </div>
+      <% } %>  
+    </div>
+
+    <div class="item" style="padding-bottom: 150px;">
+        <div class="row">
+        <div class="col-xs-12 center-text">
+        <h5>Powered by <img class="yelp-logo" src="/img/yelp-logo.png"></h5>
+        <h3>What's Nearby</h3>
+        <br>
+        </div>
+
+        </div>
+        <div class="row">
+        <div class="col-xs-12 center-text">
+        <button id="food-button" class="button button-square button-tiny"><i class="fa fa-cutlery" aria-hidden="true"></i></button>
+        <button id="activities-button" class="button button-square button-tiny"><i class="fa fa-ticket" aria-hidden="true"></i></button>
+        <button id="emergency-button" class="button button-square button-caution button-tiny"><i class="fa fa-plus-square" aria-hidden="true"></i></button>
+        </div>
+        </div>
+          <div id="food-row" class="row">
+            <div class="col-xs-12">
+            <h4 id="food-header" style="padding-left: 6px;"></h4>
+              <table class="table table-condensed table-striped restaurant-table recommendation-table">
+                <tbody>
+               
+                </tbody>
+              </table>
+            </div>
+          </div>
+           <div id="coffee-row" class="row">
+            <div class="col-xs-12">
+            <h4 id="coffee-header" style="padding-left: 6px;"></h4>
+              <table class="table table-condensed table-striped coffee-table recommendation-table">
+                <tbody>
+               
+            </tbody>
+              </table>
+            </div>
+          </div>
+           <div id="gym-row" class="row">
+            <div class="col-xs-12">
+            <h4 id="gym-header" style="padding-left: 6px;"></h4>
+              <table class="table table-condensed table-striped gym-table recommendation-table">
+                <tbody>
+               
+            </tbody>
+              </table>
+            </div>
+          </div>
+           <div id="book-row" class="row hidden">
+            <div class="col-xs-12">
+            <h4 id="book-header" style="padding-left: 6px;"></h4>
+              <table class="table table-condensed table-striped bookstore-table recommendation-table">
+                <tbody>
+               
+            </tbody>
+              </table>
+            </div>
+          </div>
+           <div id="movie-row" class="row hidden">
+            <div class="col-xs-12">
+            <h4 id="movie-header" style="padding-left: 6px;"></h4>
+              <table class="table table-condensed table-striped movie-table recommendation-table">
+                <tbody>
+               
+            </tbody>
+              </table>
+            </div>
+          </div>
+           <div id="pharmacy-row" class="row hidden">
+            <div class="col-xs-12">
+            <h4 id="pharmacy-header" style="padding-left: 6px;"></h4>
+              <table class="table table-condensed table-striped pharmacy-table recommendation-table">
+                <tbody>
+               
+            </tbody>
+              </table>
+            </div>
+          </div>
+           <div id="clinic-row" class="row hidden">
+            <div class="col-xs-12">
+            <h4 id="clinic-header" style="padding-left: 6px;"></h4>
+              <table class="table table-condensed table-striped clinic-table recommendation-table">
+                <tbody>
+               
+            </tbody>
+              </table>
+            </div>
+          </div>
+           <div id="hospital-row" class="row hidden">
+            <div class="col-xs-12">
+            <h4 id="hospital-header" style="padding-left: 6px;"></h4>
+              <table class="table table-condensed table-striped hospital-table recommendation-table">
+                <tbody>
+               
+            </tbody>
+              </table>
+            </div>
+          </div>
+    </div>
+
+
+
+  </div>
 </div>
-</div>
 
 
-  <% } else {%>
-    <table class="table table-striped">
-    <tbody>
-    <tr>
-      <td>
-        <h2 class="center-text">No items scheduled today</h2>
-      </td>
-    </tr>
-    </tbody>
-    </table>
 
-<% } %>
-<% if(event){ %>
-<div class="center-text" style="margin-top: 15px;">
-<h3 class="my-heading" style="margin-bottom: 5px;">Venue Info</h3>
-<p><span>Address: </span><%=event.address%></p><br>
-<h4 class="small-underlined-header">Additional Info</h4>
-<%= event.info %> 
-</div>
-<% } %>
 
+<!-- Gradient Div -->
+<div class="gradient-footer"></div>
+
+</body>
 
 
 

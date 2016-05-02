@@ -30,15 +30,44 @@ h3 {
 
 h4 {
   font-size: 18px;
+  font-weight: 700;
 }
 
 p {
   font-size: 14px;
 }
 
-span {
-  font-weight: bold;
-}
+/* 3D Button Styling
+-------------------------------------------------- */
+a.settings-button{
+    background: #ECECEC;
+    border-radius: 15px;
+    padding: 14px 20px;
+    display: block;
+    font-family: arial;
+    font-weight: bold;
+    color:#565656;
+    text-decoration: none;
+    text-shadow:0px 1px 0px #fff;
+    border:1px solid #a7a7a7;
+    width: 220px;
+    margin:0px auto;
+    box-shadow: 0px 2px 1px white inset, 0px -2px 8px white, 0px 2px 5px rgba(0, 0, 0, 0.1), 0px 8px 10px rgba(0, 0, 0, 0.1);
+    -webkit-transition:box-shadow 0.5s;
+  }
+  a.settings-button i{
+    float: right;
+    margin-top: 2px;
+  }
+  a.settings-button:hover{
+    box-shadow: 0px 2px 1px white inset, 0px -2px 20px white, 0px 2px 5px rgba(0, 0, 0, 0.1), 0px 8px 10px rgba(0, 0, 0, 0.1);
+  }
+  a.settings-button:active{
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5) inset, 0px -2px 20px white, 0px 1px 5px rgba(0, 0, 0, 0.1), 0px 2px 10px rgba(0, 0, 0, 0.1);
+    background:-webkit-linear-gradient(top, #d1d1d1 0%,#ECECEC 100%);
+  }
+
+
 
 .navbar-inverse {
   background: -webkit-linear-gradient(top, rgba(69,72,77,1) 0%,rgba(0,0,0,1) 100%) !important;
@@ -136,16 +165,68 @@ body {
 /*     Brent CSS
 ------------------------------------------------------------- */
 
-.date {
-  
-} 
-.gray-background {
-  background-color:#444444;
-  border-color: #222222;
+.gradient-footer {
+  position: fixed;
+  width: 100%;
+  height: 60px;
+  bottom: 57px;
+  left: 0px;
+  background: -webkit-linear-gradient(top, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 45%,rgba(255,255,255,1) 58%,rgba(255,255,255,1) 100%);
 }
 
-.white {
-  color:#ffffff;
+.date {
+  
+}
+
+#myCarousel {
+  height: 540px;
+}
+
+#myCarousel li {
+  color: black;
+  background-color: #666666;
+}
+
+
+
+.carousel-indicators {
+  position: fixed;
+  bottom: 70px;
+}
+
+.invisible-link, .invisible-link:active .invisible-link:focus{
+  border: none;
+  text-decoration: none;
+  color: black;
+  outline: none;
+}
+
+.invisible-link:hover {
+  color: #999999;
+  border: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.carousel-spacer {
+  position: absolute;
+  height: 40px;
+  width: 100%;
+}
+
+.yelp-powered {
+  background: url('/img/yelp_powered.png');
+  background-size: 100%;
+  margin: -12px auto 0px auto;
+  height: 23px;
+  width: 100px;
+  background-repeat: no-repeat;
+    
+}
+
+.yelp-logo {
+  width: 35px;
+  vertical-align: bottom;
 }
 
 .transparent-btn {
@@ -160,16 +241,60 @@ body {
   color: white;
 }
 
-.transparent-btn:active {
+.transparent-btn:active .transparent-btn:focus {
   background-color: rgba(206, 209, 211, 0.39);
   border: 2px solid white;
   color: white;
 }
 
+.recommendation-table td {
+  line-height: 1 !important;
+  padding: 5px !important;
+}
+.yelp-name {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.yelp-address {
+  font-size: 10px;
+  color: #555555;
+}
+
+.yelp-review {
+  display: inline-block; 
+}
+
+.yelp-review img {
+  vertical-align: bottom;
+}
+
+.yelp-review-count {
+  display: inline-block; 
+  font-size: 10px;
+  color: #555555; 
+}
+
+.yelp-distance {
+    color: #555555;
+    font-size: 11px;
+    font-weight: 700; 
+}
+
+.yelp-category {
+  color: #555555;
+  font-size: 12px;
+}
+
+.yelp-phone {
+  color: #555555;
+  font-size: 12px;
+}
+
 
 input, label {
-    display:block;
-    margin-bottom: 5px;
+  display:block;
+  margin-bottom: 5px;
 }
 .date-name h4 {
   font-weight: normal;
@@ -278,6 +403,10 @@ input, label {
 
 .center-text {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .center {
