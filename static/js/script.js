@@ -47,23 +47,56 @@ if($('body').is('#today-page')){
   console.log(yelpResults);
   if(yelpResults.yelpFoodData){
     yelpResults.yelpFoodData.businesses.forEach(function(restaurant){
-    var restaurantName = "<tr><td><a class='invisible-link' href="+restaurant.mobile_url+"><span class='restaurant-name'>"+restaurant.name+"</span><br>";
-    var restaurantReviewStars = "<div class='restaurant-review'><img src="+restaurant.rating_img_url_small+"></div>";
-    var restaurantReviewCount = "<div class='restaurant-review-count'>"+restaurant.review_count+" Reviews</div><br>";
-    var restaurantAddress = "<span class='restaurant-address'>"+restaurant.location.display_address[0]+", "+restaurant.location.city+"</span></a></td></tr>";
-    
-  var newRow = $(restaurantName + restaurantReviewStars + restaurantReviewCount + restaurantAddress);
-  $(".restaurant-table").append(newRow);        
+    var restaurantName = "<tr><td><a class='invisible-link' href="+restaurant.mobile_url+"><span class='yelp-name'>"+restaurant.name+"</span><br>";
+    var restaurantReviewStars = "<div class='yelp-review'><img src="+restaurant.rating_img_url_small+"></div>";
+    var restaurantReviewCount = "<div class='yelp-review-count'>"+restaurant.review_count+" Reviews</div><br>";
+    var restaurantAddress = "<span class='yelp-address'>"+restaurant.location.display_address[0]+", "+restaurant.location.city+"</span></a></td>";
+    var restaurantDistance = "<td class='text-right'><span class='yelp-distance'>"+metersToMiles(restaurant.distance)+" mi</span><br>";
+    var restaurantCategory = "<span class='yelp-category'>"+restaurant.categories[0][0]+"</span></td></tr>"
+
+  var newRow = $(restaurantName + restaurantReviewStars + restaurantReviewCount + restaurantAddress + restaurantDistance + restaurantCategory);
+  $(".restaurant-table").append(newRow); 
+  $('#food-header').text('Food:');       
       }); 
   }
+  if(yelpResults.yelpCoffeeData){
+    yelpResults.yelpCoffeeData.businesses.forEach(function(coffeeShop){
+    var coffeeName = "<tr><td><a class='invisible-link' href="+coffeeShop.mobile_url+"><span class='yelp-name'>"+coffeeShop.name+"</span><br>";
+    var coffeeReviewStars = "<div class='yelp-review'><img src="+coffeeShop.rating_img_url_small+"></div>";
+    var coffeeReviewCount = "<div class='yelp-review-count'>"+coffeeShop.review_count+" Reviews</div><br>";
+    var coffeeAddress = "<span class='yelp-address'>"+coffeeShop.location.display_address[0]+", "+coffeeShop.location.city+"</span></a></td>";
+    var coffeeDistance = "<td class='text-right'><span class='yelp-distance'>"+metersToMiles(coffeeShop.distance)+" mi</span><br>";
+    var coffeeCategory = "<span class='yelp-category'>"+coffeeShop.categories[0][0]+"</span></td></tr>"
+
+  var newRow = $(coffeeName + coffeeReviewStars + coffeeReviewCount + coffeeAddress + coffeeDistance + coffeeCategory);
+  $(".coffee-table").append(newRow);  
+  $('#coffee-header').text('Coffee/Tea:');       
+      }); 
+  }
+  if(yelpResults.yelpGymData){
+    yelpResults.yelpGymData.businesses.forEach(function(gym){
+    var gymName = "<tr><td><a class='invisible-link' href="+gym.mobile_url+"><span class='yelp-name'>"+gym.name+"</span><br>";
+    var gymReviewStars = "<div class='yelp-review'><img src="+gym.rating_img_url_small+"></div>";
+    var gymReviewCount = "<div class='yelp-review-count'>"+gym.review_count+" Reviews</div><br>";
+    var gymAddress = "<span class='yelp-address'>"+gym.location.display_address[0]+", "+gym.location.city+"</span></a></td>";
+    var gymDistance = "<td class='text-right'><span class='yelp-distance'>"+metersToMiles(gym.distance)+" mi</span><br>";
+    var gymCategory = "<span class='yelp-category'>"+gym.categories[0][0]+"</span></td></tr>"
+
+  var newRow = $(gymName + gymReviewStars + gymReviewCount + gymAddress + gymDistance + gymCategory);
+  $(".gym-table").append(newRow);   
+  $('#gym-header').text('Gym:');      
+      }); 
+  }
+
+
+
+
+
 });
 } 
 })
 } 
       
- 
-           
-     
 
 
 
@@ -234,6 +267,11 @@ function timeFormat(hours){
 function toFahrenheit(kelvin){
   return Math.round(kelvin * (9/5) - 459.67);
 };
+
+function metersToMiles(distance) {
+      var result = distance * 0.000621371192;
+     return Math.round( result * 10 ) / 10; 
+}
 
 $(function () {
     $("#datepicker").datepicker({

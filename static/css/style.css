@@ -30,6 +30,7 @@ h3 {
 
 h4 {
   font-size: 18px;
+  font-weight: 700;
 }
 
 p {
@@ -45,7 +46,7 @@ a.button{
     display: block;
     font-family: arial;
     font-weight: bold;
-    color:#7f7f7f;
+    color:#565656;
     text-decoration: none;
     text-shadow:0px 1px 0px #fff;
     border:1px solid #a7a7a7;
@@ -214,13 +215,18 @@ body {
 }
 
 .yelp-powered {
-    background: url('/img/yelp_powered.png');
-    background-size: 100%;
-    margin: -12px auto 0px auto;
-    height: 23px;
-    width: 100px;
-    background-repeat: no-repeat;
+  background: url('/img/yelp_powered.png');
+  background-size: 100%;
+  margin: -12px auto 0px auto;
+  height: 23px;
+  width: 100px;
+  background-repeat: no-repeat;
     
+}
+
+.yelp-logo {
+  width: 35px;
+  vertical-align: bottom;
 }
 
 .transparent-btn {
@@ -245,30 +251,41 @@ body {
   line-height: 1 !important;
   padding: 5px !important;
 }
-.restaurant-name {
+.yelp-name {
   font-size: 12px;
   font-weight: bold;
 }
 
-.restaurant-address {
+.yelp-address {
   font-size: 10px;
   color: #555555;
 }
 
-.restaurant-review {
+.yelp-review {
   display: inline-block; 
 }
 
-.restaurant-review img {
+.yelp-review img {
   vertical-align: bottom;
 }
 
-.restaurant-review-count {
+.yelp-review-count {
   display: inline-block; 
   font-size: 10px;
-  color: #555555;
-  
+  color: #555555; 
 }
+
+.yelp-distance {
+    color: #555555;
+    font-size: 11px;
+    font-weight: 700; 
+}
+
+.yelp-category {
+  color: #555555;
+  font-size: 12px;
+}
+
 
 input, label {
   display:block;
@@ -381,6 +398,10 @@ input, label {
 
 .center-text {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .center {

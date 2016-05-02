@@ -46,7 +46,7 @@
             <% } else {%>
               <tr>
                 <td>
-                  <h2 class="center-text">No items scheduled today</h2>
+                  <h5 class="center-text">No items scheduled today.</h5>
                 </td>
               </tr>
               <% } %>
@@ -69,14 +69,35 @@
     <div class="item" style="padding-bottom: 150px;">
     <div class="row">
     <div class="col-xs-12 center-text">
+    <h5>Powered by <img class="yelp-logo" src="/img/yelp-logo.png"></h5>
     <h3>What's Nearby</h3>
     <br>
-    <div class="yelp-powered"></div>
     </div>
     </div>
-      <div class="row">
+      <div id="food-row" class="row">
         <div class="col-xs-12">
-          <table class="table table-condensed table-striped restaurant-table recommendation-table" style="margin-top: 20px">
+        <h4 id="food-header" style="padding-left: 6px; margin-top: 20px;"></h4>
+          <table class="table table-condensed table-striped restaurant-table recommendation-table">
+            <tbody>
+           
+            </tbody>
+          </table>
+        </div>
+      </div>
+       <div id="coffee-row" class="row">
+        <div class="col-xs-12">
+        <h4 id="coffee-header" style="padding-left: 6px;"></h4>
+          <table class="table table-condensed table-striped coffee-table recommendation-table">
+            <tbody>
+           
+        </tbody>
+          </table>
+        </div>
+      </div>
+       <div id="gym-row" class="row">
+        <div class="col-xs-12">
+        <h4 id="gym-header" style="padding-left: 6px;"></h4>
+          <table class="table table-condensed table-striped gym-table recommendation-table">
             <tbody>
            
         </tbody>

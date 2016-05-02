@@ -64,16 +64,16 @@ router.get('/', function(req, res) {
         var lng = req.query.lng;
         var address = req.query.address;
         if(lng && lat){
-        request_yelp({term: "restaurants", limit: 5, sort: '2', location: address, cll: lat+','+lng}, function(error, response, body){
+        request_yelp({term: "restaurants", limit: 4, sort: '2', location: address, cll: lat+','+lng}, function(error, response, body){
           var restaurantData = JSON.parse(body);
           // console.log(restaurantData.businesses[0]);
 
-          request_yelp({term: "coffee", limit: 2, sort: '2', location: address, cll: lat+','+lng}, function(error, response, body){
+          request_yelp({term: "coffee tea", limit: 1, sort: '2', location: address, cll: lat+','+lng}, function(error, response, body){
           var coffeeData = JSON.parse(body); 
 
-            request_yelp({term: "pharmacy", limit: 1, sort: '1', location: address, cll: lat+','+lng}, function(error, response, body){
-              var pharmacyData = JSON.parse(body); 
-          res.send({yelpFoodData: restaurantData, yelpCoffeeData: coffeeData, yelpPharmacyData: pharmacyData});
+            request_yelp({term: "gym one day pass", limit: 1, sort: '2', location: address, cll: lat+','+lng}, function(error, response, body){
+              var gymData = JSON.parse(body); 
+          res.send({yelpFoodData: restaurantData, yelpCoffeeData: coffeeData, yelpGymData: gymData});
           });
         });
       });

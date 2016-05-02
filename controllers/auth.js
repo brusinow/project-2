@@ -33,18 +33,24 @@ router.post('/signup', function(req, res) {
 //trying to save groupId value to user table under current user
 router.post('/addgroup', function(req, res) {
   db.user.findById(req.currentUser.id).then(function(user){
+    if (!req.currentUser.groupId){
     db.group.findOrCreate({where: {groupName: req.body.group}}).spread(function(group, created){
-      if (group){
+      if (created){
       user.updateAttributes({groupId: group.id});
+      user.updateAttributes({type: "admin"});
       res.redirect('/today');
       } else {
         req.flash('danger', 'A group by that name already exists.');
-        res.redirect('joingroup').catch(function(err){
-        res.send(err);
-        }); 
+        res.redirect('joingroup')
       }
     
-    });
+    }).catch(function(err){
+        res.send(err);
+        }); 
+  } else{
+    req.flash('danger', 'You are already a member of a group. Please login.');
+        res.redirect('login');
+  }
   });
 });
 
