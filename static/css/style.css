@@ -39,7 +39,7 @@ p {
 
 /* 3D Button Styling
 -------------------------------------------------- */
-a.button{
+a.settings-button{
     background: #ECECEC;
     border-radius: 15px;
     padding: 14px 20px;
@@ -55,14 +55,14 @@ a.button{
     box-shadow: 0px 2px 1px white inset, 0px -2px 8px white, 0px 2px 5px rgba(0, 0, 0, 0.1), 0px 8px 10px rgba(0, 0, 0, 0.1);
     -webkit-transition:box-shadow 0.5s;
   }
-  a.button i{
+  a.settings-button i{
     float: right;
     margin-top: 2px;
   }
-  a.button:hover{
+  a.settings-button:hover{
     box-shadow: 0px 2px 1px white inset, 0px -2px 20px white, 0px 2px 5px rgba(0, 0, 0, 0.1), 0px 8px 10px rgba(0, 0, 0, 0.1);
   }
-  a.button:active{
+  a.settings-button:active{
     box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.5) inset, 0px -2px 20px white, 0px 1px 5px rgba(0, 0, 0, 0.1), 0px 2px 10px rgba(0, 0, 0, 0.1);
     background:-webkit-linear-gradient(top, #d1d1d1 0%,#ECECEC 100%);
   }
@@ -282,6 +282,11 @@ body {
 }
 
 .yelp-category {
+  color: #555555;
+  font-size: 12px;
+}
+
+.yelp-phone {
   color: #555555;
   font-size: 12px;
 }

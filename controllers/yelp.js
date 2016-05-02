@@ -71,7 +71,7 @@ router.get('/', function(req, res) {
           request_yelp({term: "coffee tea", limit: 1, sort: '2', location: address, cll: lat+','+lng}, function(error, response, body){
           var coffeeData = JSON.parse(body); 
 
-            request_yelp({term: "gym one day pass", limit: 1, sort: '2', location: address, cll: lat+','+lng}, function(error, response, body){
+            request_yelp({category_filter: "gyms", limit: 1, sort: '2', location: address, cll: lat+','+lng}, function(error, response, body){
               var gymData = JSON.parse(body); 
           res.send({yelpFoodData: restaurantData, yelpCoffeeData: coffeeData, yelpGymData: gymData});
           });
@@ -84,7 +84,56 @@ router.get('/', function(req, res) {
 });
 
 
+router.get('/activities', function(req, res) {  
+        var lat = req.query.lat;
+        var lng = req.query.lng;
+        var address = req.query.address;
+        if(lng && lat){
+        request_yelp({category_filter: "bookstores", limit: 1, sort: '0', radius_filter: 2000, location: address, cll: lat+','+lng}, function(error, response, body){
+          var bookstoreData = JSON.parse(body);
+          
+          // console.log(restaurantData.businesses[0]);
 
+          request_yelp({category_filter: "movietheaters", limit: 1, sort: '0', radius_filter: 2000, location: address, cll: lat+','+lng}, function(error, response, body){
+          var movieData = JSON.parse(body); 
+          
+
+          res.send({yelpBookData: bookstoreData, yelpMovieData: movieData});
+        });
+      });
+      } else {
+        var weatherData = {lon: 0, lat: 0};
+        console.log('no longitude and latitude');
+        }
+});
+
+router.get('/emergency', function(req, res) {  
+        var lat = req.query.lat;
+        var lng = req.query.lng;
+        var address = req.query.address;
+        if(lng && lat){
+        request_yelp({category_filter: "drugstores", limit: 1, sort: '0', radius_filter: 3000, location: address, cll: lat+','+lng}, function(error, response, body){
+          var pharmacyData = JSON.parse(body);
+          console.log(pharmacyData);
+         
+          // console.log(restaurantData.businesses[0]);
+
+          request_yelp({category_filter: "urgent_care", limit: 1, sort: '0', radius_filter: 3000, location: address, cll: lat+','+lng}, function(error, response, body){
+          var clinicData = JSON.parse(body); 
+          console.log(clinicData);
+          request_yelp({category_filter: "hospitals", limit: 1, sort: '0', radius_filter: 5000, location: address, cll: lat+','+lng}, function(error, response, body){
+          var hospitalData = JSON.parse(body); 
+          console.log(hospitalData);
+
+          res.send({yelpPharmacyData: pharmacyData, yelpClinicData: clinicData, yelpHospitalData: hospitalData});
+         });
+        });
+      });
+      } else {
+        var weatherData = {lon: 0, lat: 0};
+        console.log('no longitude and latitude');
+        }
+});
 
 
 module.exports = router;

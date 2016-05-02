@@ -1,4 +1,4 @@
-
+// WEATHER --------------------------------//
 
 if($('body').is('#today-page')){
   $(document).ready(function() {  
@@ -25,7 +25,7 @@ $( "#weatherText" ).text(toFahrenheit(data.weatherData.main.temp)+' °F');
 }
 
 
-// YELP ------------------------//
+// YELP Main Results ------------------------//
 
 if($('body').is('#today-page')){
   $(document).ready(function() {  
@@ -33,7 +33,7 @@ if($('body').is('#today-page')){
     var lng = $("#coordinates").attr('lng');
     var address = $('#address').text();
     if (lat && lng){
-      console.log('Entering AJAX Call');
+
     $.ajax({
     url: '/yelp',
     method: 'GET',
@@ -87,22 +87,184 @@ if($('body').is('#today-page')){
   $('#gym-header').text('Gym:');      
       }); 
   }
-
-
-
-
-
 });
+
 } 
 })
 } 
       
 
+// YELP Activities Results ------------------------//
 
+if($('body').is('#today-page')){
+  $(document).ready(function() {  
+    var lat = $("#coordinates").attr('lat');
+    var lng = $("#coordinates").attr('lng');
+    var address = $('#address').text();
+    if (lat && lng){
+  
+    $.ajax({
+    url: '/yelp/activities',
+    method: 'GET',
+    data: {
+    lat: lat,
+    lng: lng,
+    address: address
+  },
 
+}).done(function(yelpResults) {
+  console.log(yelpResults);
+  if(yelpResults.yelpBookData){
+    yelpResults.yelpBookData.businesses.forEach(function(bookstore){
+    var bookstoreName = "<tr><td><a class='invisible-link' href="+bookstore.mobile_url+"><span class='yelp-name'>"+bookstore.name+"</span><br>";
+    var bookstoreReviewStars = "<div class='yelp-review'><img src="+bookstore.rating_img_url_small+"></div>";
+    var bookstoreReviewCount = "<div class='yelp-review-count'>"+bookstore.review_count+" Reviews</div><br>";
+    var bookstoreAddress = "<span class='yelp-address'>"+bookstore.location.display_address[0]+", "+bookstore.location.city+"</span></a></td>";
+    var bookstoreDistance = "<td class='text-right'><span class='yelp-distance'>"+metersToMiles(bookstore.distance)+" mi</span><br>";
+    var bookstoreCategory = "<span class='yelp-category'>"+bookstore.categories[0][0]+"</span></td></tr>"
 
+  var newRow = $(bookstoreName + bookstoreReviewStars + bookstoreReviewCount + bookstoreAddress + bookstoreDistance + bookstoreCategory);
+  $(".bookstore-table").append(newRow); 
+  $('#book-header').text('Bookstore:');       
+      }); 
+  }
+  if(yelpResults.yelpMovieData){
+    yelpResults.yelpMovieData.businesses.forEach(function(theater){
+    var theaterName = "<tr><td><a class='invisible-link' href="+theater.mobile_url+"><span class='yelp-name'>"+theater.name+"</span><br>";
+    var theaterReviewStars = "<div class='yelp-review'><img src="+theater.rating_img_url_small+"></div>";
+    var theaterReviewCount = "<div class='yelp-review-count'>"+theater.review_count+" Reviews</div><br>";
+    var theaterAddress = "<span class='yelp-address'>"+theater.location.display_address[0]+", "+theater.location.city+"</span></a></td>";
+    var theaterDistance = "<td class='text-right'><span class='yelp-distance'>"+metersToMiles(theater.distance)+" mi</span><br>";
+    var theaterCategory = "<span class='yelp-category'>"+theater.categories[0][0]+"</span></td></tr>"
 
+  var newRow = $(theaterName + theaterReviewStars + theaterReviewCount + theaterAddress + theaterDistance + theaterCategory);
+  $(".movie-table").append(newRow);  
+  $('#movie-header').text('Movie Theater:');       
+      }); 
+  }
+
+});
+} 
+})
+} 
+
+// Yelp EMERGENCY Results----------------------------//
      
+if($('body').is('#today-page')){
+  $(document).ready(function() {  
+    var lat = $("#coordinates").attr('lat');
+    var lng = $("#coordinates").attr('lng');
+    var address = $('#address').text();
+    if (lat && lng){
+      console.log('Entering AJAX Call');
+    $.ajax({
+    url: '/yelp/emergency',
+    method: 'GET',
+    data: {
+    lat: lat,
+    lng: lng,
+    address: address
+  },
+
+}).done(function(yelpResults) {
+  if(yelpResults.yelpPharmacyData){
+    yelpResults.yelpPharmacyData.businesses.forEach(function(pharmacy){
+    var pharmacyName = "<tr><td><a class='invisible-link' href="+pharmacy.mobile_url+"><span class='yelp-name'>"+pharmacy.name+"</span><br>";
+    var pharmacyReviewStars = "<div class='yelp-review'><img src="+pharmacy.rating_img_url_small+"></div>";
+    var pharmacyReviewCount = "<div class='yelp-review-count'>"+pharmacy.review_count+" Reviews</div><br>";
+    var pharmacyAddress = "<span class='yelp-address'>"+pharmacy.location.display_address[0]+", "+pharmacy.location.city+"</span></a></td>";
+    var pharmacyDistance = "<td class='text-right'><span class='yelp-distance'>"+metersToMiles(pharmacy.distance)+" mi</span><br>";
+    var pharmacyCategory = "<span class='yelp-category'>"+pharmacy.categories[0][0]+"</span><br>"
+    var displayPharmacyPhone = pharmacy.display_phone.slice(3);
+    var pharmacyPhone = "<span class='yelp-phone'><a href='tel:"+pharmacy.display_phone+"'>"+displayPharmacyPhone+"</a></span></td></tr>"
+
+  var newRow = $(pharmacyName + pharmacyReviewStars + pharmacyReviewCount + pharmacyAddress + pharmacyDistance + pharmacyCategory + pharmacyPhone);
+  $(".pharmacy-table").append(newRow); 
+  $('#pharmacy-header').text('Pharmacy:');       
+      }); 
+  }
+  if(yelpResults.yelpHospitalData){
+    yelpResults.yelpHospitalData.businesses.forEach(function(hospital){
+    var hospitalName = "<tr><td><a class='invisible-link' href="+hospital.mobile_url+"><span class='yelp-name'>"+hospital.name+"</span><br>";
+    var hospitalReviewStars = "<div class='yelp-review'><img src="+hospital.rating_img_url_small+"></div>";
+    var hospitalReviewCount = "<div class='yelp-review-count'>"+hospital.review_count+" Reviews</div><br>";
+    var hospitalAddress = "<span class='yelp-address'>"+hospital.location.display_address[0]+", "+hospital.location.city+"</span></a></td>";
+    var hospitalDistance = "<td class='text-right'><span class='yelp-distance'>"+metersToMiles(hospital.distance)+" mi</span><br>";
+    var hospitalCategory = "<span class='yelp-category'>"+hospital.categories[0][0]+"</span><br>"
+    var displayHospitalPhone = hospital.display_phone.slice(3);
+    
+    var hospitalPhone = "<span class='yelp-phone'><a href='tel:"+hospital.display_phone+"'>"+displayHospitalPhone+"</a></span></td></tr>"
+  var newRow = $(hospitalName + hospitalReviewStars + hospitalReviewCount + hospitalAddress + hospitalDistance + hospitalCategory + hospitalPhone);
+  $(".hospital-table").append(newRow);   
+  $('#hospital-header').text('Hospital:');      
+      }); 
+  }
+
+  if(yelpResults.yelpClinicData){
+    yelpResults.yelpClinicData.businesses.forEach(function(clinic){
+    var clinicName = "<tr><td><a class='invisible-link' href="+clinic.mobile_url+"><span class='yelp-name'>"+clinic.name+"</span><br>";
+    var clinicReviewStars = "<div class='yelp-review'><img src="+clinic.rating_img_url_small+"></div>";
+    var clinicReviewCount = "<div class='yelp-review-count'>"+clinic.review_count+" Reviews</div><br>";
+    var clinicAddress = "<span class='yelp-address'>"+clinic.location.display_address[0]+", "+clinic.location.city+"</span></a></td>";
+    var clinicDistance = "<td class='text-right'><span class='yelp-distance'>"+metersToMiles(clinic.distance)+" mi</span><br>";
+    var clinicCategory = "<span class='yelp-category'>"+clinic.categories[0][0]+"</span><br>"
+    var displayClinicPhone = clinic.display_phone.slice(3);
+    var clinicPhone = "<span class='yelp-phone'><a href='tel:"+clinic.display_phone+"'>"+displayClinicPhone+"</a></span></td></tr>"
+
+
+  var newRow = $(clinicName + clinicReviewStars + clinicReviewCount + clinicAddress + clinicDistance + clinicCategory + clinicPhone);
+  $(".clinic-table").append(newRow);  
+  $('#clinic-header').text('Urgent Care Clinic:');       
+      }); 
+  }
+  
+});
+
+} 
+})
+} 
+
+
+
+
+$(document).on( 'click', '#food-button', function(e){
+  console.log("food button");
+document.getElementById("food-row").className = "row";
+document.getElementById("coffee-row").className = "row";
+document.getElementById("gym-row").className = "row";
+document.getElementById("book-row").className = "row hidden";
+document.getElementById("movie-row").className = "row hidden";
+document.getElementById("pharmacy-row").className = "row hidden";
+document.getElementById("clinic-row").className = "row hidden";
+document.getElementById("hospital-row").className = "row hidden";
+})
+
+$(document).on( 'click', '#activities-button', function(e){
+  console.log("activity button");
+document.getElementById("food-row").className = "row hidden";
+document.getElementById("coffee-row").className = "row hidden";
+document.getElementById("gym-row").className = "row hidden";
+document.getElementById("book-row").className = "row";
+document.getElementById("movie-row").className = "row";
+document.getElementById("pharmacy-row").className = "row hidden";
+document.getElementById("clinic-row").className = "row hidden";
+document.getElementById("hospital-row").className = "row hidden";
+})
+
+$(document).on( 'click', '#emergency-button', function(e){
+  console.log("emergency button");
+document.getElementById("food-row").className = "row hidden";
+document.getElementById("coffee-row").className = "row hidden";
+document.getElementById("gym-row").className = "row hidden";
+document.getElementById("book-row").className = "row hidden";
+document.getElementById("movie-row").className = "row hidden";
+document.getElementById("pharmacy-row").className = "row";
+document.getElementById("clinic-row").className = "row";
+document.getElementById("hospital-row").className = "row";
+})
+
+
+
 
 
 $(document).ready(function() {  
