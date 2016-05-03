@@ -1,3 +1,48 @@
+
+$(document).on( 'click', '#login-button', function(e){
+  e.preventDefault();
+ var date = new Date();
+ console.log(date);
+ var myDate = date.getTime();
+
+ console.log(typeof myDate);
+ var email = $("#login-email").val();
+ var password = $("#login-password").val();
+    $.ajax({
+    url: '/',
+    method: 'POST',
+    data: {
+    myDate: myDate,
+    email: email, 
+    password: password  
+  },
+
+}).success(function(data) {
+console.log("success on login button");
+window.location.assign("/today");
+});
+});
+
+
+
+
+
+
+// if($('body').is('#today-page')){
+//   $(document).ready(function() {  
+//     console.log("Only on today page");
+   
+ 
+// console.log("done");
+// });
+// } 
+// })
+// }
+
+
+
+
+
 // WEATHER --------------------------------//
 
 if($('body').is('#today-page')){

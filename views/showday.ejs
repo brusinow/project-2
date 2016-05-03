@@ -9,7 +9,9 @@
   <!-- Wrapper for slides -->
   <div class="carousel-inner" role="listbox">
     <div class="item active" style="padding-bottom: 150px;">
-    <div class="hidden" id="coordinates" lat="<%=event.lat%>" lng="<%=event.lng%>"></div>
+    
+    
+
       <div class="row">
         <div class="col-xs-12 center-text day-name"><h4><%= dayName %></h4></div>
       </div>
@@ -25,7 +27,7 @@
       </div>
       <% } %>
       <% if(event && event.lat && event.lng){ %>
-  
+      <div class="hidden" id="coordinates" lat="<%=event.lat%>" lng="<%=event.lng%>"></div>
       <div class="row">
         <div class="col-xs-3 col-xs-offset-3 center-text" id="weather"><img id="weather-img" src=""></div>
         <div class="col-xs-3 center-text" id="weatherText"></div>

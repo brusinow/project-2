@@ -129,15 +129,18 @@ app.get('/settings', function(req, res){
 
 
 app.post('/', function(req, res) {
-  console.log("entering route");
+  console.log("entering post route");
   var email = req.body.email;
   var password = req.body.password;
+  var date = parseInt(req.body.myDate);
   db.user.authenticate(email, password, function(err, user) {
     if(err){
       res.send(err);
     } else if (user){
+      console.log('there is a user');
       req.session.userId = user.id;
-      res.redirect('/today');
+      req.session.date = date;
+      res.send('success');
     } else {
       req.flash('danger', 'Your email or password is invalid. Try again.');
       res.redirect('/');
@@ -146,33 +149,22 @@ app.post('/', function(req, res) {
 });
 
 
-
 app.get('/today', function(req, res) {
+  console.log('entering today page get route')
   if(req.currentUser && req.currentUser.groupId) {
-    var MyDate = new Date();
-    var now;
-    MyDate.setDate(MyDate.getDate());
-
-    now = ('0' + (MyDate.getMonth()+1)).slice(-2) + '/'
-             + ('0' + MyDate.getDate()).slice(-2) + '/'
-             + MyDate.getFullYear();
-    var nowText = moment().format('MMMM Do, YYYY');
-
-    var dateForDow = moment();
-    var thisDayOfWeek = dateForDow.format('dddd');
-
+    var date = req.session.date;
+    var now = moment(date).format('MM/DD/YYYY');
+    var nowText = moment(date).format('MMMM Do, YYYY');
+    var thisDayOfWeek = moment(date).format('dddd');
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
     db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
-      
+      console.log("should now render showday");
       res.render('showday', {date: nowText, event: event, dayName: thisDayOfWeek, alerts: req.flash()});
       });
   } else if (req.currentUser && !req.currentUser.groupId){
-    
    req.flash('danger', 'You must be a member of a group.');
    res.redirect('/auth/group');
-    
   } else {
-    
     req.flash('danger', 'You must be logged in, buddy...');
     res.redirect('/');
     
