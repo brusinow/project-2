@@ -376,7 +376,7 @@ $(document).on( 'click', '.delete-link-event', function(e){
     console.log('click working and id ',myID);
     $.ajax({
         method:'DELETE',
-        url:'/edit-event/show',
+        url:'/edit-event/delete',
         data: {
           id:myID
         }
