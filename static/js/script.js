@@ -412,6 +412,59 @@ $(document).on( 'click', '.edit-event-submit', function(e){
     });
 });
 
+
+$(document).on( 'click', '.accept-link', function(e){
+    e.preventDefault();
+    var userId = $(this).attr('user');
+    console.log(userId)
+    console.log('edit click working and id ',userId);
+    $.ajax({
+        method:'POST',
+        url:'/accept',
+        data: {
+          userId: userId,
+        }
+    }).success(function(){
+         console.log("success")
+        //redirect or update view
+    });
+});
+
+$(document).on( 'click', '.accept-link', function(e){
+    e.preventDefault();
+    var userId = $(this).attr('user');
+    console.log("front end delete userId is: ",userId)
+ 
+    $.ajax({
+        method:'DELETE',
+        url:'/accept',
+        data: {
+          userId: userId
+        }
+    }).success(function(){
+         window.location.assign("/pending");
+        //redirect or update view
+    });
+});
+
+
+$(document).on( 'click', '.decline-link', function(e){
+    e.preventDefault();
+    var userId = $(this).attr('user');
+    console.log("front end delete userId is: ",userId)
+ 
+    $.ajax({
+        method:'DELETE',
+        url:'/decline',
+        data: {
+          userId: userId
+        }
+    }).success(function(){
+         window.location.assign("/pending");
+        //redirect or update view
+    });
+});
+
 // $('#itin-select').change(function() {
 
 //   $.get({
@@ -490,30 +543,136 @@ $(function () {
 $('#startTime').timepicker();
 
 $('#endTime').timepicker();
-// $('#venue-search-btn').click(function(e){
+
+
+
+
+// $(document).on( 'click', '#venue-address', function(e){
+//     e.preventDefault();
+//   console.log("clickity bidness");
+//   var venueName = $("#venue-name");
+//   var venueNameText = venueName.val();
+//   var venueCity = $("#venue-city");
+//   var venueCityText = venueCity.val();
+//     $.ajax({
+//         method:'GET',
+//         url:'/google',
+//         data: {
+//           venueName: venueNameText,
+//           venueCity: venueCityText
+//         }
+//     }).success(function(){
+//          console.log("success")
+//         $('#google-places-div').html("");
+//         console.log(data);
+//         //redirect or update view
+//     });
+// });
+
+$(document).on( 'click', '#venue-address', function(e){
+if ($("#venue-address").val().length === 0 && $("#venue-name").val().length > 0){
+  $('#venue-address').addClass('loadinggif');
+    $("#google-places-div table tbody").html("");
+  console.log("clickity bidness");
+  var venueName = $("#venue-name");
+  var venueNameText = venueName.val();
+  var venueCity = $("#venue-city");
+  var venueCityText = venueCity.val();
+  $.ajax({
+    url: '/google',
+    method: 'GET',
+    data: {
+      venueName: venueNameText,
+      venueCity: venueCityText
+    },
+    success: function(xhr, status, data){
+
+      console.log(status);
+      if(status === 'success'){
+       $('#venue-address').removeClass('loadinggif');
+     console.log(data.responseJSON.results);
+      for (var i=0;i< data.responseJSON.results.length && i < 4; i++){
+      var newRow = $("<tr><td style='border: none;'><a attr='"+data.responseJSON.results[i].formatted_address+"' href='#'>"+data.responseJSON.results[i].formatted_address+"<br>("+data.responseJSON.results[i].name+")</a></td></tr>");
+      
+    $("#google-places-div table tbody").append(newRow);
+    $("#google-places-div").fadeIn(500);     
+    // document.getElementById("google-places-div").className = "venue-suggestions";
+  };
+  var refine = $("<tr><td style='border: none;'>Don't see your venue here? Refine your search.</td></tr>");
+   $("#google-places-div table tbody").append(refine);
+  // dataParsed.events.itinItems.forEach(function(item){
+  // var newRow = $("");
+  // $("table tbody").append(newRow);        
+      // }); 
+        
+      }
+    }
+  }); 
+  }
+}); 
+
+
+
+$(document).on( 'click', '#google-places-div a', function(e){
+
+  // document.getElementById("google-places-div").className = "hidden venue-suggestions";
+  e.preventDefault();
+  $("#google-places-div").fadeOut(500);
+  var address = $(this).attr('attr');
+  $("#venue-address").val(address);
+
+});
+
+
+$(document).on( 'click', '#clear-venue-address', function(e){
+  $("#google-places-div").fadeOut();
+  $("#venue-address").val("");
+});
+
+$(document).on( 'click', '#clear-venue-city', function(e){
+  $("#google-places-div").fadeOut();
+  $("#venue-city").val("");
+});
+
+$(document).on( 'click', '#clear-venue-name', function(e){
+  $("#google-places-div").fadeOut();
+  $("#venue-name").val("");
+});
+
+if($('body').is('#new-event-page')){
+  $(document).ready(function() {  
+    $("#google-places-div").hide();
+  });
+}
+// $('#venue-address').click(function(e){
 //   e.preventDefault();
-//   var input = $("#search-input");
-//   var query = input.val();
-//   console.log(query);
-//   $.ajax({
-//     url: '/new-event/result',
+//   console.log("clickity bidness");
+//   var venueName = $("#venue-name");
+//   var venueNameText = venueName.val();
+//   var venueCity = $("#venue-city");
+//   var venueCityText = venueCity.val();
+//  $.ajax({
+//     url: "/venue-recommendations",
+//     console.log(url);
 //     method: 'GET',
 //     data: {
-//       q: query,
+//       name: venueNameText,
+//       city: venueCityText
 //     },
 //     success: function(xhr, status, data){
 //       console.log(status);
 //       if(status === 'success'){
-//         $('#venue-list').html("");
-//         // console.log(data);
-//         // console.log(data.responseJSON.results.length);
-//         for (var i=0;i< data.responseJSON.results.length; i++){
-//           $('#venue-list').append("<a href='/new-event/result/"+data.responseJSON.results[i].place_id+"'<h4>"+data.responseJSON.results[i].name+"</h4><p>"+data.responseJSON.results[i].formatted_address+"</p></a><br><br>");
-//         }
+//         $('#google-places-div').html("");
+//         console.log(data.responseJSON);
+        // console.log(data.responseJSON.results.length);
+        // for (var i=0;i<6; i++){
+        //   $('#google-places-div').append("<a href='/new-event/result/"+data.responseJSON.results[i].place_id+"'<h4>"+data.responseJSON.results[i].name+"</h4><p>"+data.responseJSON.results[i].formatted_address+"</p></a><br><br>");
+        // }
 //       }
 //     }
 //   }); 
 // });
+
 
 // $('#event-add-btn').click(function(e){
 //   e.preventDefault();

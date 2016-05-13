@@ -59,16 +59,17 @@ router.post('/joingroup', function(req, res) {
     db.group.findOne({where: {groupName: req.body.group}}).then(function(group){
       if (group){
       user.updateAttributes({groupId: group.id});
-      res.redirect('/today');
+      db.almostUser.create({firstName: req.currentUser.firstName, lastName: req.currentUser.lastName, email: req.currentUser.email, userId: req.currentUser.id, groupId: group.id}).then(function(data){
+           res.redirect('/today');
+        });
       } else {
-        
-        res.redirect('joingroup').catch(function(err){
+        res.redirect('joingroup')
          req.flash('danger', 'A group by that name already exists.'); 
-        }); 
-      }
+        }; 
     });
   });
 });
+
 
 
 router.get('/addgroup', function(req, res) {

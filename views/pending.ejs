@@ -1,0 +1,25 @@
+    <h3 class="center-text">Pending Users</h3>
+     <% if (almostUsers.length>0){ %>
+     <table class="pending-table table">
+      <tbody>
+      <% almostUsers.forEach(function(user){ %>
+       <tr>
+        <td style="text-align: right;">
+          <%=user.firstName%> <%=user.lastName%>
+        </td>
+        <td style="margin-bottom: 0px; vertical-align: bottom;" class="text-center">
+        <a user="<%=user.userId%>" class="accept-link" href="/accept"><button class="button button-raised button-action button-circle"><i class="fa fa-thumbs-up"></i></button></a>
+        <a user="<%=user.userId%>" class="decline-link" href="/decline"><button class="button button-raised button-caution button-circle"><i class="fa fa-thumbs-down"></i></button></a> 
+        </td>
+        </tr>
+
+      
+    
+           <% }) %>
+      </tbody>
+    </table>
+    <% } else{%>
+    <div class="center-text" style="margin-top: 25px;">
+    <h4>You have no pending users.</h4>
+    </div>
+    <% } %>

@@ -100,9 +100,9 @@
   color: #666666;
   background-color: #eeeeee;
   border-color: #eeeeee;
-  font-weight: 300;
+  font-weight: 4000;
   font-size: 16px;
-  font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-family: "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, sans-serif;
   text-decoration: none;
   text-align: center;
   line-height: 40px;
@@ -411,6 +411,10 @@
   .button-box.button-small,
   .button-square.button-small {
     width: 30px; }
+  .button-circle.button-smallish,
+  .button-box.button-smallish,
+  .button-square.button-smallish {
+    width: 27px; }
   .button-circle.button-tiny,
   .button-box.button-tiny,
   .button-square.button-tiny {
@@ -631,6 +635,10 @@
   .button-border-thin.button-small,
   .button-border-thick.button-small {
     line-height: 26px; }
+  .button-border.button-smallish, .button-smallish.button-border-thin, .button-smallish.button-border-thick,
+  .button-border-thin.button-smallish,
+  .button-border-thick.button-smallish {
+    line-height: 27px; }
   .button-border.button-tiny, .button-tiny.button-border-thin, .button-tiny.button-border-thick,
   .button-border-thin.button-tiny,
   .button-border-thick.button-tiny {
@@ -706,6 +714,10 @@
     font-size: 15.6px;
     height: 31.6px;
     line-height: 31.6px; }
+  .button-borderless.button-smallish {
+    font-size: 13.5px;
+    height: 30px;
+    line-height: 30px; }
   .button-borderless.button-tiny {
     font-size: 12.48px;
     height: 28.48px;
@@ -1537,6 +1549,12 @@
   height: 30px;
   line-height: 30px;
   padding: 0 30px; }
+
+.button-smallish {
+  font-size: 12px;
+  height: 27px;
+  line-height: 27px;
+  padding: 0 8px; }
 
 .button-tiny {
   font-size: 9.6px;

@@ -113,7 +113,7 @@ app.get('/', function(req, res){
 app.get('/settings', function(req, res){
   if(req.currentUser && req.currentUser.groupId) {
   db.group.findOne({where: {id: req.currentUser.groupId}}).then(function(group){
-    console.log(group);
+  
   res.render('settings', {group: group, alerts: req.flash()});
 });
 } else if (req.currentUser && !req.currentUser.groupId){
@@ -151,7 +151,7 @@ app.post('/', function(req, res) {
 
 app.get('/today', function(req, res) {
   console.log('entering today page get route')
-  if(req.currentUser && req.currentUser.groupId) {
+  if(req.currentUser && req.currentUser.groupId && req.currentUser.type) {
     var date = req.session.date;
     var now = moment(date).format('MM/DD/YYYY');
     var nowText = moment(date).format('MMMM Do, YYYY');
@@ -164,6 +164,9 @@ app.get('/today', function(req, res) {
   } else if (req.currentUser && !req.currentUser.groupId){
    req.flash('danger', 'You must be a member of a group.');
    res.redirect('/auth/group');
+   } else if (req.currentUser && req.currentUser.groupId && !req.currentUser.type){
+    req.flash('info', 'Your admin needs to approve your request to join their group. You should receive email confirmation shortly.');
+    res.redirect('/');
   } else {
     req.flash('danger', 'You must be logged in, buddy...');
     res.redirect('/');
@@ -186,7 +189,7 @@ app.get('/new-event', function(req, res){
 app.get('/new-itin', function(req, res){
      if(req.currentUser) {
   db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC'}).then(function(events){
-    console.log("events should be ",events);
+
   res.render('new-itin', {events: events, alerts: req.flash()});
   });
     } else {
@@ -316,21 +319,22 @@ app.get('/showlist', function(req, res){
   }
 });
 
-// app.get('/new-event/result', function(req, res){
-//   var query = req.query.q;
-//   var fullQuery = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + query + '&key='+process.env.KEY;
-//   console.log(fullQuery);
-//   console.log("running get request route");
-//   request(fullQuery, function(err, response, body) {
-//       var data = JSON.parse(body);
-    
-//     if (!err && response.statusCode == 200) {   
-//       res.send(data);
-//     } else {
-//       res.render('error')
-//     } 
-//   });
-// });
+app.get('/google', function(req, res){
+  var venueName = req.query.venueName;
+  var venueCity = req.query.venueCity;
+  var fullQuery = 'https://maps.googleapis.com/maps/api/place/textsearch/json?query=' + venueName +" "+ venueCity + '&key='+process.env.GOOGLE_PLACES_KEY;
+  console.log(fullQuery);
+  console.log("running get request route");
+  request(fullQuery, function(err, response, body) {
+      var data = JSON.parse(body);
+      console.log(data);
+    if (!err && response.statusCode == 200) {   
+      res.send(data);
+    } else {
+      res.render('error')
+    } 
+  });
+});
 
 // app.get('/new-event/result/:id', function(req, res){
 //   var id = req.params.id;
@@ -355,8 +359,8 @@ app.post('/new-itin/submit', function(req, res){
   var endTimeItin = req.body.endTime;
   var taskItin = req.body.task;
   var currentEvent = req.body.currentEventId;
-  console.log(req.body);
-  console.log("Current event should be "+currentEvent)
+ 
+  
   db.itinItem.create({startTime: startTimeItin, endTime: endTimeItin, task: taskItin, eventId: currentEvent}).then(function(data){
     req.flash('info', 'Your itinerary item was created.');
     res.redirect('/settings')
@@ -380,7 +384,7 @@ db.event.findOne({where: {id: req.params.id, groupId: req.currentUser.groupId},i
   var dateForDow = moment(forecastTime);
   var thisDayOfWeek = dateForDow.format('dddd');
   
-  console.log(thisDayOfWeek);
+ 
 
   if(event && event.lng && event.lat){
 
@@ -407,13 +411,49 @@ db.event.findOne({where: {id: req.params.id, groupId: req.currentUser.groupId},i
 
 
 
+app.get('/pending', function(req, res){
+  db.almostUser.findAll({where: {groupId: req.currentUser.groupId}, order: '"lastName" ASC' }).then(function(almostUsers){
+   res.render('pending', {almostUsers: almostUsers, alerts: req.flash()}) 
+  })
+})
+
+app.post('/accept', function(req, res){
+  var id = req.body.userId;
+ 
+  db.user.findOne({where: {groupId: req.currentUser.groupId, id: id}}).then(function(data){
+    data.updateAttributes({type: "user"}).then(function(data){
+       
+       res.send('success') 
+    })
+  })
+})
 
 
+app.delete('/accept', function(req, res) {
+  var id = req.body.userId;
+  console.log('entering delete route');
+  db.almostUser.findOne({where: {groupId: req.currentUser.groupId, userId: id}}).then(function(user){
+   
+    user.destroy().then(function(data){
+      req.flash('info', 'Your user was successfully added to the group.');
+      res.send('success');
+    });
+  });
+});
 
-
-
-
-
+app.delete('/decline', function(req, res) {
+  var id = req.body.userId;
+  console.log('entering delete route');
+  db.almostUser.findOne({where: {groupId: req.currentUser.groupId, userId: id}}).then(function(almostUser){
+    almostUser.destroy().then(function(data){
+        db.user.update({ groupId: null}, { where: {id:id}}).then(function(data){
+         req.flash('info', 'You declined this user.');
+      res.send('success'); 
+       
+      });
+    });
+  });
+});
 
 app.get('/logout', function(req, res){
   req.session.userId = false;
