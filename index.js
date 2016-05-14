@@ -153,9 +153,13 @@ app.get('/today', function(req, res) {
   console.log('entering today page get route')
   if(req.currentUser && req.currentUser.groupId && req.currentUser.type) {
     var date = req.session.date;
+    console.log(date);
     var now = moment(date).format('MM/DD/YYYY');
+    console.log(now);
     var nowText = moment(date).format('MMMM Do, YYYY');
+    console.log(nowText);
     var thisDayOfWeek = moment(date).format('dddd');
+    console.log(thisDayOfWeek);
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
     db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
       console.log("should now render showday");
