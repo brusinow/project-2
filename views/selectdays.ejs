@@ -31,7 +31,7 @@ var dailyAvg = (weatherArray[3] + weatherArray[4])/2;
 %>
 
 <div class="row">
-  <div class="col-xs-3 col-xs-offset-3 center-text" id="weather"><img src="http://openweathermap.org/img/w/<%=util.mode(imageArray)%>.png"></div>
+  <div class="col-xs-3 col-xs-offset-3 center-text" id="weather"><img src="/img/weather/<%=util.mode(imageArray)%>.png"></div>
   <div class="col-xs-3 center-text" id="weatherText"><%=util.toFahrenheit(dailyAvg)%>°F</div>
 </div>
 <div class="row">
