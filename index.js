@@ -132,14 +132,19 @@ app.post('/', function(req, res) {
   console.log("entering post route");
   var email = req.body.email;
   var password = req.body.password;
-  var date = parseInt(req.body.myDate);
+  var now = req.body.now;
+  console.log('this is now: ',now);
+  var nowText = req.body.nowText;
+  var thisDayOfWeek = req.body.thisDayOfWeek;
   db.user.authenticate(email, password, function(err, user) {
     if(err){
       res.send(err);
     } else if (user){
       console.log('there is a user');
       req.session.userId = user.id;
-      req.session.date = date;
+      req.session.now = now;
+      req.session.nowText = nowText;
+      req.session.thisDayOfWeek = thisDayOfWeek;
       res.send('success');
     } else {
       req.flash('danger', 'Your email or password is invalid. Try again.');
@@ -149,21 +154,20 @@ app.post('/', function(req, res) {
 });
 
 
+
 app.get('/today', function(req, res) {
   console.log('entering today page get route')
   if(req.currentUser && req.currentUser.groupId && req.currentUser.type) {
-    var date = req.session.date;
-    console.log(date);
-    var now = moment(date).format('MM/DD/YYYY');
+    var now = req.session.now;
     console.log(now);
-    var nowText = moment(date).format('MMMM Do, YYYY');
+    var nowText = req.session.nowText;
     console.log(nowText);
-    var thisDayOfWeek = moment(date).format('dddd');
+    var thisDayOfWeek = req.session.thisDayOfWeek;
     console.log(thisDayOfWeek);
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
     db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
       console.log("should now render showday");
-      res.render('showday', {date: nowText, event: event, dayName: thisDayOfWeek, alerts: req.flash()});
+      res.render('showday', {date: nowText, event: event, dayName: thisDayOfWeek});
       });
   } else if (req.currentUser && !req.currentUser.groupId){
    req.flash('danger', 'You must be a member of a group.');
@@ -177,6 +181,10 @@ app.get('/today', function(req, res) {
     
  }
 });
+
+
+
+
 
 
 

@@ -1,18 +1,20 @@
 
 $(document).on( 'click', '#login-button', function(e){
   e.preventDefault();
- var date = new Date();
- console.log(date);
- var myDate = date.getTime();
+  var now = moment().format('MM/DD/YYYY');
+  var nowText = moment().format('MMMM Do, YYYY');
+  var thisDayOfWeek = moment().format('dddd');
 
- console.log(typeof myDate);
- var email = $("#login-email").val();
- var password = $("#login-password").val();
+  console.log(typeof myDate);
+  var email = $("#login-email").val();
+  var password = $("#login-password").val();
     $.ajax({
     url: '/',
     method: 'POST',
     data: {
-    myDate: myDate,
+    now: now,
+    nowText: nowText,
+    thisDayOfWeek: thisDayOfWeek,
     email: email, 
     password: password  
   },
@@ -24,17 +26,15 @@ window.location.assign("/today");
 });
 
 
-if($('body').is('#today-page')){
-(function currentTime(){
-console.log('function is called')
-var now = moment().format('MM/DD/YYYY');
-var nowText = moment().format('MMMM Do, YYYY');
-var thisDayOfWeek = moment().format('dddd');
- console.log(now);
- console.log(nowText);
- console.log(thisDayOfWeek);
-})()
-};
+// if($('body').is('#today-page')){
+// (function currentTime(){
+// console.log('function is called')
+
+//  console.log(now);
+//  console.log(nowText);
+//  console.log(thisDayOfWeek)
+// })()
+// };
 
 
 
@@ -42,7 +42,7 @@ var thisDayOfWeek = moment().format('dddd');
 
 if($('body').is('#today-page')){
   (function() {  
-    console.log("Only on today page");
+    // console.log("Only on today page");
     var lat = $("#coordinates").attr('lat');
     var lng = $("#coordinates").attr('lng');
     if (lat && lng){
@@ -57,7 +57,7 @@ if($('body').is('#today-page')){
 }).done(function(data) {
  
 $("#weather-img").attr( "src", '/img/weather/'+data.weatherData.weather[0].icon+'.png' );
-console.log($("weather").attr('src'));
+
 $( "#weatherText" ).text(toFahrenheit(data.weatherData.main.temp)+' °F');
 });
 } 
