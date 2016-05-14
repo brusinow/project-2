@@ -24,29 +24,24 @@ window.location.assign("/today");
 });
 
 
-
-
-
-
-// if($('body').is('#today-page')){
-//   $(document).ready(function() {  
-//     console.log("Only on today page");
-   
- 
-// console.log("done");
-// });
-// } 
-// })
-// }
-
-
+if($('body').is('#today-page')){
+(function currentTime(){
+console.log('function is called')
+var now = moment().format('MM/DD/YYYY');
+var nowText = moment().format('MMMM Do, YYYY');
+var thisDayOfWeek = moment().format('dddd');
+ console.log(now);
+ console.log(nowText);
+ console.log(thisDayOfWeek);
+})()
+};
 
 
 
 // WEATHER --------------------------------//
 
 if($('body').is('#today-page')){
-  $(document).ready(function() {  
+  (function() {  
     console.log("Only on today page");
     var lat = $("#coordinates").attr('lat');
     var lng = $("#coordinates").attr('lng');
@@ -66,14 +61,14 @@ console.log($("weather").attr('src'));
 $( "#weatherText" ).text(toFahrenheit(data.weatherData.main.temp)+' °F');
 });
 } 
-})
+})()
 }
 
 
 // YELP Main Results ------------------------//
 
 if($('body').is('#today-page')){
-  $(document).ready(function() {  
+  (function() {  
     var lat = $("#coordinates").attr('lat');
     var lng = $("#coordinates").attr('lng');
     var address = $('#address').text();
@@ -135,14 +130,14 @@ if($('body').is('#today-page')){
 });
 
 } 
-})
-} 
+})()
+}; 
       
 
 // YELP Activities Results ------------------------//
 
 if($('body').is('#today-page')){
-  $(document).ready(function() {  
+  (function() {  
     var lat = $("#coordinates").attr('lat');
     var lng = $("#coordinates").attr('lng');
     var address = $('#address').text();
@@ -190,13 +185,13 @@ if($('body').is('#today-page')){
 
 });
 } 
-})
-} 
+})()
+}; 
 
 // Yelp EMERGENCY Results----------------------------//
      
 if($('body').is('#today-page')){
-  $(document).ready(function() {  
+  (function() {  
     var lat = $("#coordinates").attr('lat');
     var lng = $("#coordinates").attr('lng');
     var address = $('#address').text();
@@ -266,8 +261,8 @@ if($('body').is('#today-page')){
 });
 
 } 
-})
-} 
+})()
+}; 
 
 
 
