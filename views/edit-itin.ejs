@@ -8,19 +8,17 @@
   <div class="col-xs-12">
     <select id="itin-select" class="form-control selectpicker" name="currentEventId">
            <% if (events.length >0){ %>
-     <% var nowFormat = moment().tz(moment.tz.guess()); %>
       <% events.forEach(function(event){ %>  
         
-       <% var month = event.date.slice(0,2);
-        var day = event.date.slice(3,5);
-        var year = event.date.slice(6,10);
-        var forecastTime = year + '-' + month + '-' + day;
-        var thisEventDate = moment(forecastTime).format('MMMM Do, YYYY');
-        var dateForDow = moment(forecastTime);
-        var thisDayOfWeek = dateForDow.format('dddd');
-        var difference = dateForDow.diff(nowFormat);
+    <% 
+        var eventUnix = moment(event.date).unix();
+        console.log("event date in unix time is: ",eventUnix);
+        var nowUnix = moment(now).unix();
+        console.log("current date in unix time is: ",nowUnix);
+        var difference = nowUnix - eventUnix;
+        console.log("the difference is: ",difference);
 %>
-  <% if(difference > -172800000){ %>  
+  <% if(difference < 345600){ %>  
         <option value="<%=event.id%>"><%=event.date%> (<%=event.venue%>, <%=event.city%>)</option>
         <%}%>
       <%})%>
@@ -39,7 +37,11 @@
         <tr>
           <td><a attr="<%=item.id%>" href="#" class='delete-link'>Delete</a></td>
           <td ><%= item.task %></td>
-          <td style='text-align: right;'><%=util.timeFormat(item.startTime) + ' - '%><%=util.timeFormat(item.endTime)%></td>
+          <td style='text-align: right;'><%=util.timeFormat(item.startTime)%>
+          <%if (item.endTime){ %>
+                <%=' - '+util.timeFormat(item.endTime)%>
+                <%}%>
+          </td>
         </tr>
         <% }) %>
         <%} else{ %>

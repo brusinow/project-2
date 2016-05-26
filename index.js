@@ -110,22 +110,7 @@ app.get('/', function(req, res){
 });
 
 
-app.get('/settings', function(req, res){
-  if(req.currentUser && req.currentUser.groupId) {
-  db.group.findOne({where: {id: req.currentUser.groupId}}).then(function(group){
-  
-  res.render('settings', {group: group, alerts: req.flash()});
-});
-} else if (req.currentUser && !req.currentUser.groupId){
-    res.redirect('/auth/group');
-   req.flash('danger', 'You must be a member of a group.');
-    
-  } else {
-    res.redirect('/');
-    req.flash('danger', 'You must be logged in, buddy...');
-    
- }
-});
+
 
 
 app.post('/', function(req, res) {
@@ -133,6 +118,8 @@ app.post('/', function(req, res) {
   var email = req.body.email;
   var password = req.body.password;
   var now = req.body.now;
+  var nowEpoch = req.body.nowEpoch;
+  var twoDaysAgo = req.body.twoDaysAgo;
   console.log('this is now: ',now);
   var nowText = req.body.nowText;
   var thisDayOfWeek = req.body.thisDayOfWeek;
@@ -143,6 +130,8 @@ app.post('/', function(req, res) {
       console.log('there is a user');
       req.session.userId = user.id;
       req.session.now = now;
+      req.session.epoch = nowEpoch;
+      req.session.twoDaysAgo = twoDaysAgo;
       req.session.nowText = nowText;
       req.session.thisDayOfWeek = thisDayOfWeek;
       res.send('success');
@@ -159,11 +148,8 @@ app.get('/today', function(req, res) {
   console.log('entering today page get route')
   if(req.currentUser && req.currentUser.groupId && req.currentUser.type) {
     var now = req.session.now;
-    console.log(now);
     var nowText = req.session.nowText;
-    console.log(nowText);
     var thisDayOfWeek = req.session.thisDayOfWeek;
-    console.log(thisDayOfWeek);
 // I want to pass data from event and itinItem to 'today.ejs' connected by groupId
     db.event.findOne({where: {date: now, groupId: req.currentUser.groupId},include:[db.itinItem],order: '"startTime" ASC'}).then(function(event){
       console.log("should now render showday");
@@ -188,39 +174,12 @@ app.get('/today', function(req, res) {
 
 
 
-app.get('/new-event', function(req, res){
-   if(req.currentUser) {
-  res.render('new-event', {alerts: req.flash()});
-  } else {
-    req.flash('danger', 'You must be logged in, buddy...');
-    res.redirect('/');
-  }
-});
+
 // ------------------- Managing an Itinerary Item 
 
-app.get('/new-itin', function(req, res){
-     if(req.currentUser) {
-  db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC'}).then(function(events){
 
-  res.render('new-itin', {events: events, alerts: req.flash()});
-  });
-    } else {
-      req.flash('danger', 'You must be logged in, buddy...');
-      res.redirect('/');
-    }
-});
 
-app.get('/edit-itin', function(req, res){
-  
-     if(req.currentUser) {
-  db.event.findAll({where: {groupId: req.currentUser.groupId}, include:[db.itinItem], order: '"date" ASC, "startTime" ASC'}).then(function(events){
-  res.render('edit-itin', {events: events, moment: moment, alerts: req.flash()});
-  });
-    } else {
-      req.flash('danger', 'You must be logged in, buddy...');
-      res.redirect('/');
-    }
-  });
+
 
 app.post('/edit-itinChange', function(req, res){
   var id = req.body.currentEventId;
@@ -246,17 +205,7 @@ app.delete('/edit-itin/delete', function(req, res) {
 
 // EDITING/DELETING EVENTS
 
-app.get('/edit-event', function(req, res){
-  
-     if(req.currentUser) {
-  db.event.findAll({where: {groupId: req.currentUser.groupId}, order: '"date" ASC'}).then(function(events){
-  res.render('edit-event', {events: events, moment: moment, alerts: req.flash()});
-  });
-    } else {
-      req.flash('danger', 'You must be logged in, buddy...');
-      res.redirect('/');
-    }
-});
+
 
 
 app.delete('/edit-event/delete', function(req, res) {
@@ -467,15 +416,13 @@ app.delete('/decline', function(req, res) {
   });
 });
 
-app.get('/logout', function(req, res){
-  req.session.userId = false;
-  res.redirect('/');
-});
+
 
 
 app.use('/auth', require('./controllers/auth'));
 app.use('/weather', require('./controllers/weather'));
 app.use('/yelp', require('./controllers/yelp'));
+app.use('/settings', require('./controllers/settings'));
 
 
 app.listen(process.env.PORT || 3000)

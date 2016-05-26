@@ -2,10 +2,13 @@
 $(document).on( 'click', '#login-button', function(e){
   e.preventDefault();
   var now = moment().format('MM/DD/YYYY');
+  var nowEpoch = moment().unix();
+  console.log("nowEpoch is: ",nowEpoch)
+  var twoDaysAgo = nowEpoch - 172800000;
   var nowText = moment().format('MMMM Do, YYYY');
   var thisDayOfWeek = moment().format('dddd');
 
-  console.log(typeof myDate);
+  
   var email = $("#login-email").val();
   var password = $("#login-password").val();
     $.ajax({
@@ -13,6 +16,8 @@ $(document).on( 'click', '#login-button', function(e){
     method: 'POST',
     data: {
     now: now,
+    nowEpoch: nowEpoch,
+    twoDaysAgo: twoDaysAgo,
     nowText: nowText,
     thisDayOfWeek: thisDayOfWeek,
     email: email, 
@@ -338,7 +343,14 @@ $('#itin-select').change(function() {
       var dataParsed = JSON.parse(data.responseText);
      
   dataParsed.events.itinItems.forEach(function(item){
-  var newRow = $("<tr><td><a attr='"+item.id+"' href='#' class='delete-link'>Delete</a></td><td>"+item.task+"</td><td style='text-align: right; font-size:12px;'>"+timeFormat(item.startTime)+" - "+timeFormat(item.endTime)+"</td></tr>");
+    if (item.endTime){
+      var separator = " - ";
+      var endTime = timeFormat(item.endTime);
+    } else {
+      var separator = "";
+      var endTime = "";
+    };
+  var newRow = $("<tr><td><a attr='"+item.id+"' href='#' class='delete-link'>Delete</a></td><td>"+item.task+"</td><td style='text-align: right; font-size:12px;'>"+timeFormat(item.startTime)+separator+endTime+"</td></tr>");
   $("table tbody").append(newRow);        
       }); 
         
@@ -479,7 +491,7 @@ $(document).on( 'click', '.decline-link', function(e){
 function timeFormat(hours){
     var letters = 'AM'
     var minutes = '00'
- if (hours === 0 || hours === '0') {
+ if (hours === 0 || hours === '0' || hours === 24 || hours === '24') {
     hours = 12;
     letters = 'AM';
   }  

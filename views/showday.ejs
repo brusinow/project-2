@@ -42,7 +42,11 @@
             <% event.itinItems.forEach(function(item){ %>
               <tr>
                 <td><%= item.task %></td>
-                <td style="text-align: right"><%=util.timeFormat(item.startTime) + ' - '%><%=util.timeFormat(item.endTime)%></td>
+                <td style="text-align: right"><%=util.timeFormat(item.startTime)%>
+                <%if (item.endTime){ %>
+                <%=' - '+util.timeFormat(item.endTime)%>
+                <%}%>
+                </td>
               </tr>
               <% }) %>
             <% } else {%>

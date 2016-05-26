@@ -28,7 +28,7 @@ module.exports = {
   timeFormat: function(hours){
     var letters = 'AM'
     var minutes = '00'
- if (hours === 0 || hours === '0') {
+ if (hours === 0 || hours === '0' || hours === 24 || hours === '24') {
     hours = 12;
     letters = 'AM';
   }  
