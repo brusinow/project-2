@@ -330,7 +330,7 @@ $('#itin-select').change(function() {
   var currentEventId = parseInt($('#itin-select').val());
 
   $.ajax({
-    url: '/edit-itinChange',
+    url: '/settings/edit-itinChange',
     method: 'POST',
     data: {
       currentEventId: currentEventId
@@ -367,7 +367,7 @@ $(document).on( 'click', '.delete-link', function(e){
     console.log('click working and id ',myID);
     $.ajax({
         method:'DELETE',
-        url:'/edit-itin/delete',
+        url:'/settings/edit-itin/delete',
         data: {
           id:myID
         }
@@ -383,7 +383,7 @@ $(document).on( 'click', '.delete-link-event', function(e){
     console.log('click working and id ',myID);
     $.ajax({
         method:'DELETE',
-        url:'/edit-event/delete',
+        url:'/settings/edit-event/delete',
         data: {
           id:myID
         }
@@ -404,7 +404,7 @@ $(document).on( 'click', '.edit-event-submit', function(e){
     console.log('edit click working and id ',myID);
     $.ajax({
         method:'PUT',
-        url:'/edit-event/show/',
+        url:'/settings/edit-event/show/',
         data: {
           id: myID,
           date: date,
@@ -427,7 +427,7 @@ $(document).on( 'click', '.accept-link', function(e){
     console.log('edit click working and id ',userId);
     $.ajax({
         method:'POST',
-        url:'/accept',
+        url:'/settings/accept',
         data: {
           userId: userId,
         }
@@ -444,12 +444,12 @@ $(document).on( 'click', '.accept-link', function(e){
  
     $.ajax({
         method:'DELETE',
-        url:'/accept',
+        url:'/settings/accept',
         data: {
           userId: userId
         }
     }).success(function(){
-         window.location.assign("/pending");
+         window.location.assign("/settings/pending");
         //redirect or update view
     });
 });
@@ -462,12 +462,12 @@ $(document).on( 'click', '.decline-link', function(e){
  
     $.ajax({
         method:'DELETE',
-        url:'/decline',
+        url:'/settings/decline',
         data: {
           userId: userId
         }
     }).success(function(){
-         window.location.assign("/pending");
+         window.location.assign("/settings/pending");
         //redirect or update view
     });
 });
