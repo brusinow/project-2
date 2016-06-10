@@ -12,8 +12,8 @@ Technologies used: Node.js, Express, Postgres/SQL, Sequelize, AJAX, JQuery, JQue
 Things to fix: Client timezone is not currently working with Heroku. Heroku allows its timezone to be set to one specific one but overwrites any attempt with moment.js.
 
 Room for improvement: 
--desktop version (which will mostly be used by tour managers for data entry)
--adding multi-paneled today page with google places for food and coffee
--utilizing multiple user levels (admin, etc)
--allowing users to connect to see when friends are playing in the same place
--messaging/chat
+* desktop version (which will mostly be used by tour managers for data entry)
+* adding multi-paneled today page with google places for food and coffee
+* utilizing multiple user levels (admin, etc)
+* allowing users to connect to see when friends are playing in the same place
+* messaging/chat
