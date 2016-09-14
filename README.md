@@ -1,15 +1,13 @@
-# Road Warrior
+# Road Warrior (Version 1)
 
-View it here: https://roadwarrior.herokuapp.com
+View it here: https://roadwarrior.herokuapp.com  
 Wireframe PDF: https://roadwarrior.herokuapp.com/RoadWarrior.pdf 
 
 "Road Warrior" Music Tour Management Tool by Brent Rusinow
 
 Installation: use "git clone" to copy to your computer and then open in your preferred browser.
 
-Technologies used: Node.js, Express, Postgres/SQL, Sequelize, AJAX, JQuery, JQuery UI, and Bootstrap,
-
-Things to fix: Client timezone is not currently working with Heroku. Heroku allows its timezone to be set to one specific one but overwrites any attempt with moment.js.
+Technologies used: Node.js, Express, Postgres/SQL, Sequelize, AJAX, JQuery, JQuery UI, Bootstrap, and moment.js.
 
 Room for improvement: 
 * desktop version (which will mostly be used by tour managers for data entry)
