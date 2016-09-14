@@ -9,6 +9,8 @@ Installation: use "git clone" to copy to your computer and then open in your pre
 
 Technologies used: Node.js, Express, Postgres/SQL, Sequelize, AJAX, JQuery, JQuery UI, Bootstrap, and moment.js.
 
+APIs used: Yelp, Google Places, Google Geolocation, Open Weather API.
+
 Room for improvement: 
 * desktop version (which will mostly be used by tour managers for data entry)
 * adding multi-paneled today page with google places for food and coffee
